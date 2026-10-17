@@ -29,14 +29,14 @@ case and why it would help.
 1. Fork the repository
 2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/upbeat.git`
 3. Create a branch: `git checkout -b feature/your-feature-name`
-4. Install dependencies: `npm install`
+4. Install dependencies: `bun install`
 
 #### Development Setup
 
 ```bash
-npm install
+bun install
 cp .env.example .env.local
-DEMO=true npm run dev
+DEMO=true bun run dev
 ```
 
 `DEMO=true` serves built-in sample data, so you do not need an UptimeRobot key
@@ -48,11 +48,11 @@ to work on the page. To use your own account, put a read-only key in
 Every pull request runs these, so run them before you push:
 
 ```bash
-npm run lint
-npm run format:check
-npm run type-check
-npm test
-npm run build && npm run test:e2e
+bun run lint
+bun run format:check
+bun run type-check
+bun run test
+bun run build && bun run test:e2e
 ```
 
 For UI changes, also look at the page in both light and dark themes and at
@@ -60,8 +60,8 @@ phone width, and include screenshots in the pull request.
 
 #### Code Style
 
-- Prettier and ESLint are the source of truth; `npm run format` and
-  `npx eslint --fix .` fix most issues
+- Prettier and ESLint are the source of truth; `bun run format` and
+  `bunx eslint --fix .` fix most issues
 - Kebab-case file names, one component per file in `src/components/`, its
   props in a `.types.ts` file beside it
 - Anything that talks to UptimeRobot lives in `src/lib/uptimerobot.ts`; the UI,

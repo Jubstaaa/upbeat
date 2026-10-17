@@ -51,9 +51,9 @@ You need a **read-only API key**: UptimeRobot → [Integrations & API](https://d
 Paste the key when asked for `UPTIMEROBOT_API_KEY`. To deploy from a clone instead:
 
 ```sh
-npm install
-npx wrangler secret put UPTIMEROBOT_API_KEY
-npm run deploy
+bun install
+bunx wrangler secret put UPTIMEROBOT_API_KEY
+bun run deploy
 ```
 
 ### Docker
@@ -116,11 +116,11 @@ The server calls UptimeRobot's `getMonitors` once a minute and keeps the result 
 ## Development
 
 ```sh
-npm install
-DEMO=true npm run dev
+bun install
+DEMO=true bun run dev
 ```
 
-Checks: `npm run lint`, `npm run format:check`, `npm run type-check`, `npm test`, and `npm run build && npm run test:e2e`. See [CONTRIBUTING.md](CONTRIBUTING.md).
+Checks: `bun run lint`, `bun run format:check`, `bun run type-check`, `bun run test`, and `bun run build && bun run test:e2e`. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

@@ -12,33 +12,30 @@ jobs:
         steps:
             - uses: actions/checkout@v4
 
-            - uses: actions/setup-node@v4
-              with:
-                  node-version: 24
-                  cache: npm
+            - uses: oven-sh/setup-bun@v2
 
-            - run: npm ci
+            - run: bun install --frozen-lockfile
 
             - name: Lint
-              run: npm run lint
+              run: bun run lint
 
             - name: Check formatting
-              run: npm run format:check
+              run: bun run format:check
 
             - name: Type check
-              run: npm run type-check
+              run: bun run type-check
 
             - name: Unit tests
-              run: npm test
+              run: bun run test
 
             - name: Build
-              run: npm run build
+              run: bun run build
 
             - name: Install Playwright
-              run: npx playwright install --with-deps chromium
+              run: bunx playwright install --with-deps chromium
 
             - name: Smoke test
-              run: npm run test:e2e
+              run: bun run test:e2e
 
     docker:
         runs-on: ubuntu-latest

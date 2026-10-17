@@ -3,7 +3,7 @@
 .wrangler
 .superpowers
 node_modules
-package-lock.json
+bun.lock
 playwright-report
 test-results
 assets
