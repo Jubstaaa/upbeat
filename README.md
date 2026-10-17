@@ -27,7 +27,7 @@
 ## Features
 
 - Overall status with a live heartbeat; the tab title and favicon follow it
-- 90 days of daily uptime bars per monitor, with a tooltip per day (30 days on phones)
+- 90 days of daily uptime bars per monitor, with a tooltip per day (30 days on phones, where a tap shows the day)
 - 24-hour response-time sparkline per monitor
 - Click a row to expand its response-time chart and outage history; `#monitor-id` links open it directly
 - Recent incidents, with simultaneous outages merged into one
