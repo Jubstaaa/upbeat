@@ -58,5 +58,12 @@
         "vite": "^8.3.4",
         "vitest": "^5.0.5",
         "wrangler": "^4.151.1"
+    },
+    "cloudflare": {
+        "bindings": {
+            "UPTIMEROBOT_API_KEY": {
+                "description": "A **read-only** API key from UptimeRobot → [Integrations & API](https://dashboard.uptimerobot.com/integrations)."
+            }
+        }
     }
 }
