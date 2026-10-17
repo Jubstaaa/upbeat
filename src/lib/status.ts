@@ -12,6 +12,7 @@ import { fetchMonitors, UptimeRobotKeyError } from './uptimerobot'
 
 const FRESH_MS = 60_000
 const RETRY_MS = 10_000
+const HUNG_MS = 15_000
 
 export function createStatusSource({
     clock = Date.now,
@@ -20,6 +21,7 @@ export function createStatusSource({
     let cached: CachedResult | null = null
     let lastGood: StatusData | null = null
     let pending: Promise<StatusResult> | null = null
+    let pendingSince = 0
 
     function remember(
         result: StatusResult,
@@ -53,11 +55,16 @@ export function createStatusSource({
     }
 
     return function getCachedStatus() {
-        if (cached && clock() < cached.expiresAt)
+        const now = clock()
+        if (cached && now < cached.expiresAt)
             return Promise.resolve(cached.result)
-        pending ??= refresh().finally(() => {
-            pending = null
-        })
+        if (!pending || now - pendingSince > HUNG_MS) {
+            const request: Promise<StatusResult> = refresh().finally(() => {
+                if (pending === request) pending = null
+            })
+            pending = request
+            pendingSince = now
+        }
         return pending
     }
 }

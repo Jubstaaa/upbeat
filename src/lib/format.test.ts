@@ -82,24 +82,51 @@ describe('dayTone', () => {
 describe('incidents', () => {
     it('names a single service', () => {
         expect(
-            formatIncidentTitle({ end: 10, monitors: ['API'], start: 0 })
+            formatIncidentTitle({
+                end: 10,
+                monitors: ['API'],
+                ongoing: [],
+                start: 0,
+            })
         ).toBe('API was down')
         expect(
-            formatIncidentTitle({ end: null, monitors: ['API'], start: 0 })
+            formatIncidentTitle({
+                end: null,
+                monitors: ['API'],
+                ongoing: ['API'],
+                start: 0,
+            })
         ).toBe('API is down')
     })
 
     it('counts several services', () => {
         expect(
-            formatIncidentTitle({ end: 10, monitors: ['A', 'B'], start: 0 })
+            formatIncidentTitle({
+                end: 10,
+                monitors: ['A', 'B'],
+                ongoing: [],
+                start: 0,
+            })
         ).toBe('2 services were down')
         expect(
             formatIncidentTitle({
                 end: null,
                 monitors: ['A', 'B', 'C'],
+                ongoing: ['A', 'B', 'C'],
                 start: 0,
             })
         ).toBe('3 services are down')
+    })
+
+    it('names only the services still down in an ongoing incident', () => {
+        expect(
+            formatIncidentTitle({
+                end: null,
+                monitors: ['A', 'B'],
+                ongoing: ['A'],
+                start: 0,
+            })
+        ).toBe('A is down')
     })
 
     it('describes how long an outage lasted', () => {

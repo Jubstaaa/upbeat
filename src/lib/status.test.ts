@@ -92,6 +92,20 @@ describe('createStatusSource', () => {
         expect(fetchMonitors).toHaveBeenCalledTimes(2)
     })
 
+    it('starts a new request when the shared one has hung', async () => {
+        const responses = [
+            () => new Promise<UptimeRobotMonitor[]>(() => {}),
+            async () => [monitor()],
+        ]
+        const { advance, fetchMonitors, source } = setup(() =>
+            (responses.shift() ?? responses[0])()
+        )
+        void source()
+        advance(16_000)
+        expect(await source()).toMatchObject({ kind: 'ok' })
+        expect(fetchMonitors).toHaveBeenCalledTimes(2)
+    })
+
     it('asks for setup when the key is rejected', async () => {
         const { source } = setup(async () =>
             Promise.reject(new UptimeRobotKeyError())

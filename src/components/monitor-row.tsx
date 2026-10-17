@@ -11,7 +11,6 @@ import Pulse from './pulse'
 import ResponseSparkline from './response-sparkline'
 import UptimeBars from './uptime-bars'
 
-const EXPAND = { duration: 0.25, ease: [0.2, 0.8, 0.2, 1] } as const
 const CLOSED = { height: 0, opacity: 0 }
 const OPEN = { height: 'auto', opacity: 1 }
 
@@ -93,8 +92,7 @@ export default function MonitorRow({
                         className="overflow-hidden"
                         exit={CLOSED}
                         id={detailsId}
-                        initial={CLOSED}
-                        transition={EXPAND}>
+                        initial={CLOSED}>
                         <MonitorDetails monitor={monitor} />
                     </motion.div>
                 )}

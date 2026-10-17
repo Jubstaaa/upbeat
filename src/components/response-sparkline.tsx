@@ -1,6 +1,6 @@
 import { useId, useMemo } from 'react'
 
-import { motion } from 'motion/react'
+import { motion, useReducedMotion } from 'motion/react'
 
 import { cn } from '@/lib/cn'
 
@@ -20,6 +20,7 @@ export default function ResponseSparkline({
     size = 'small',
 }: ResponseSparklineProps) {
     const reactId = useId()
+    const shouldReduceMotion = useReducedMotion()
 
     const { height, width } = SIZES[size]
     const path = useMemo(
@@ -71,7 +72,7 @@ export default function ResponseSparkline({
                 className="fill-none stroke-current stroke-[1.5]"
                 d={path}
                 initial={{ pathLength: 0 }}
-                transition={DRAW}
+                transition={shouldReduceMotion ? undefined : DRAW}
                 vectorEffect="non-scaling-stroke"
             />
         </svg>

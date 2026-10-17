@@ -180,10 +180,12 @@ export function mergeIncidents(entries: IncidentEntry[]): Incident[] {
                     : Math.max(last.end, entry.end)
             if (!last.monitors.includes(entry.monitor))
                 last.monitors.push(entry.monitor)
+            if (entry.end === null) last.ongoing.push(entry.monitor)
         } else {
             incidents.push({
                 end: entry.end,
                 monitors: [entry.monitor],
+                ongoing: entry.end === null ? [entry.monitor] : [],
                 start: entry.start,
             })
         }

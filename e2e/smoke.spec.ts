@@ -61,3 +61,19 @@ test('serves the badge and the feed', async ({ request }) => {
     expect(feed.headers()['content-type']).toContain('application/atom+xml')
     expect(await feed.text()).toContain('2 services were down')
 })
+
+test('skips the expand animation when motion is reduced', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto('/', { waitUntil: 'networkidle' })
+    const opacity = await page.evaluate(async () => {
+        const row = [...document.querySelectorAll('button')].find(button =>
+            button.textContent?.includes('Public API')
+        )
+        row?.click()
+        await new Promise(requestAnimationFrame)
+        await new Promise(requestAnimationFrame)
+        const details = document.getElementById('public-api-details')
+        return details ? getComputedStyle(details).opacity : null
+    })
+    expect(opacity).toBe('1')
+})

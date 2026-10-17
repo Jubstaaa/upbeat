@@ -19,6 +19,7 @@ export interface Outage {
 export interface Incident {
     end: number | null
     monitors: string[]
+    ongoing: string[]
     start: number
 }
 

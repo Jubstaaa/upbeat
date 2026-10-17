@@ -59,11 +59,16 @@ export function formatOutageDuration({ end, start }: Outage): string {
     return end === null ? 'ongoing' : formatDuration(end - start)
 }
 
-export function formatIncidentTitle({ end, monitors }: Incident): string {
+export function formatIncidentTitle({
+    end,
+    monitors,
+    ongoing,
+}: Incident): string {
     const isOngoing = end === null
-    if (monitors.length > 1)
-        return `${monitors.length} services ${isOngoing ? 'are' : 'were'} down`
-    return `${monitors[0]} ${isOngoing ? 'is' : 'was'} down`
+    const names = isOngoing ? ongoing : monitors
+    if (names.length > 1)
+        return `${names.length} services ${isOngoing ? 'are' : 'were'} down`
+    return `${names[0]} ${isOngoing ? 'is' : 'was'} down`
 }
 
 export function dayTone(value: number | null): DayTone {

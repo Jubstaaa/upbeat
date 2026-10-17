@@ -283,8 +283,8 @@ describe('mergeIncidents', () => {
                 { end: 9_000, monitor: 'A', start: 8_000 },
             ])
         ).toEqual([
-            { end: 9_000, monitors: ['A'], start: 8_000 },
-            { end: 1_200, monitors: ['A', 'B'], start: 500 },
+            { end: 9_000, monitors: ['A'], ongoing: [], start: 8_000 },
+            { end: 1_200, monitors: ['A', 'B'], ongoing: [], start: 500 },
         ])
     })
 
@@ -294,7 +294,19 @@ describe('mergeIncidents', () => {
                 { end: null, monitor: 'A', start: 100 },
                 { end: 5_000, monitor: 'B', start: 4_000 },
             ])
-        ).toEqual([{ end: null, monitors: ['A', 'B'], start: 100 }])
+        ).toEqual([
+            { end: null, monitors: ['A', 'B'], ongoing: ['A'], start: 100 },
+        ])
+    })
+
+    it('counts only the monitors that are still down as ongoing', () => {
+        expect(
+            mergeIncidents([
+                { end: null, monitor: 'A', start: 100 },
+                { end: null, monitor: 'B', start: 130 },
+                { end: 5_000, monitor: 'C', start: 4_000 },
+            ])[0].ongoing
+        ).toEqual(['A', 'B'])
     })
 
     it('returns the ten most recent', () => {
