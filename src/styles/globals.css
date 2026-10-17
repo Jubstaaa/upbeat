@@ -26,8 +26,8 @@
     --color-down: #e5484d;
     --color-maintenance: #3e8ef7;
 
-    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-    --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+    --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+    --font-mono: 'JetBrains Mono Variable', ui-monospace, monospace;
 
     --animate-beat: beat 1.6s ease-in-out infinite;
     --animate-ring: ring 1.6s ease-out infinite;

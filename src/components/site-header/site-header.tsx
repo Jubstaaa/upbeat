@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import Image from 'next/image'
-
 import { formatAgo } from '@/lib/format/format'
 
 import type { SiteHeaderProps } from './site-header.types'
@@ -30,8 +28,7 @@ export default function SiteHeader({
         <header className="mb-8 flex items-center justify-between gap-4">
             <div className="flex min-w-0 items-center gap-2.5">
                 {logo && (
-                    <Image
-                        unoptimized
+                    <img
                         alt=""
                         className="size-7 rounded-md"
                         height={28}

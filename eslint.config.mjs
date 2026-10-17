@@ -1,12 +1,14 @@
+import js from '@eslint/js'
 import { defineConfig, globalIgnores } from 'eslint/config'
-import nextVitals from 'eslint-config-next/core-web-vitals'
-import nextTs from 'eslint-config-next/typescript'
 import eslintConfigPrettier from 'eslint-config-prettier'
 import importPlugin from 'eslint-plugin-import'
 import perfectionistPlugin from 'eslint-plugin-perfectionist'
 import prettierPlugin from 'eslint-plugin-prettier'
 import reactPlugin from 'eslint-plugin-react'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
 import globals from 'globals'
+import tseslint from 'typescript-eslint'
 
 const memberGroups = {
     customGroups: [
@@ -19,17 +21,17 @@ const memberGroups = {
 }
 
 const eslintConfig = defineConfig([
-    ...nextVitals,
-    ...nextTs,
+    js.configs.recommended,
+    ...tseslint.configs.recommended,
+    reactHooks.configs.flat.recommended,
+    reactRefresh.configs.vite,
     globalIgnores([
-        '.next/**',
-        '.open-next/**',
+        'dist/**',
         '.wrangler/**',
         '.superpowers/**',
         'out/**',
         'playwright-report/**',
         'test-results/**',
-        'next-env.d.ts',
     ]),
     {
         files: ['**/*.{ts,tsx,js,jsx,mjs}'],
@@ -77,16 +79,6 @@ const eslintConfig = defineConfig([
                         {
                             group: 'external',
                             pattern: 'react-*',
-                            position: 'before',
-                        },
-                        {
-                            group: 'external',
-                            pattern: 'next',
-                            position: 'before',
-                        },
-                        {
-                            group: 'external',
-                            pattern: 'next/**',
                             position: 'before',
                         },
                         {
@@ -148,6 +140,12 @@ const eslintConfig = defineConfig([
             'import/resolver': {
                 typescript: true,
             },
+        },
+    },
+    {
+        files: ['src/components/ui/**'],
+        rules: {
+            'react-refresh/only-export-components': 'off',
         },
     },
     {

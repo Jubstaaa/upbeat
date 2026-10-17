@@ -1,12 +1,10 @@
 node_modules
-.next
-.open-next
+dist
 .wrangler
 .superpowers
 out
 playwright-report
 test-results
-next-env.d.ts
 *.tsbuildinfo
 .env
 .env.*

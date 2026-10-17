@@ -1,5 +1,4 @@
-.next
-.open-next
+dist
 .wrangler
 .superpowers
 node_modules
@@ -7,4 +6,3 @@ bun.lock
 playwright-report
 test-results
 assets
-next-env.d.ts

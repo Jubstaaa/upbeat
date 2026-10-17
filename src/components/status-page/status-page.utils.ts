@@ -1,10 +1,10 @@
-import type { StatusData } from '@/lib/status/status.types'
+import type { StatusResponse } from '@/server/server.types'
 
-export async function fetchStatus(): Promise<StatusData> {
-    const response = await fetch('/api/status', { cache: 'no-store' })
-    if (!response.ok)
+export async function fetchStatus(): Promise<StatusResponse> {
+    const response = await fetch('/api/status')
+    if (response.status !== 200 && response.status !== 503)
         throw new Error(`Status request failed with HTTP ${response.status}`)
-    return (await response.json()) as StatusData
+    return (await response.json()) as StatusResponse
 }
 
 export function parseHash(raw: string): string {

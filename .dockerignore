@@ -1,7 +1,6 @@
 .git
 .github
-.next
-.open-next
+dist
 .wrangler
 .superpowers
 node_modules

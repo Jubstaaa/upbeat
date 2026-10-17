@@ -9,6 +9,7 @@
   <a href="https://github.com/Jubstaaa/upbeat/releases"><img src="https://img.shields.io/github/v/release/Jubstaaa/upbeat" alt="Release"></a>
   <a href="https://github.com/Jubstaaa/upbeat/pkgs/container/upbeat"><img src="https://img.shields.io/badge/docker-ghcr.io%2Fjubstaaa%2Fupbeat-blue" alt="Docker"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/Jubstaaa/upbeat" alt="MIT license"></a>
+  <a href="https://status.webgooh.tech"><img src="https://status.webgooh.tech/badge.svg" alt="Live demo status"></a>
 </p>
 
 <p align="center"><img src="assets/demo.gif" alt="upbeat showing six services, a heartbeat animation and 90-day uptime bars" width="800"></p>
@@ -89,6 +90,14 @@ Invalid values are ignored with a log line, never a crash. Set `SITE_URL` when u
 Name a monitor `Group / Name` in UptimeRobot and it appears under that group: `Websites / example.com` shows as `example.com` under **Websites**. The separator is a slash with spaces around it, so URL-like names such as `api.example.com/health` stay as they are. Monitors without a group are listed first under **Services**. Groups and monitors are sorted alphabetically.
 
 ## Badges
+
+Live from [status.webgooh.tech](https://status.webgooh.tech):
+
+[![status](https://status.webgooh.tech/badge.svg)](https://status.webgooh.tech)
+[![webgooh.tech](https://status.webgooh.tech/badge.svg?monitor=webgooh-tech)](https://status.webgooh.tech/#webgooh-tech)
+[![waqt-api.haccoo.dev](https://status.webgooh.tech/badge.svg?monitor=waqt-api-haccoo-dev)](https://status.webgooh.tech/#waqt-api-haccoo-dev)
+
+Add them to your own README:
 
 ```markdown
 ![status](https://status.example.com/badge.svg)

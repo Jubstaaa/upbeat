@@ -1,28 +1,20 @@
 # syntax=docker/dockerfile:1
 
-FROM oven/bun:1-alpine AS deps
+FROM oven/bun:1-alpine AS build
 WORKDIR /app
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
-
-FROM oven/bun:1-alpine AS build
-WORKDIR /app
-ENV NEXT_TELEMETRY_DISABLED=1
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN bun run build
 
-FROM node:24-alpine AS runner
+FROM oven/bun:1-alpine
 WORKDIR /app
 ENV NODE_ENV=production \
-    NEXT_TELEMETRY_DISABLED=1 \
-    PORT=3000 \
-    HOSTNAME=0.0.0.0
-RUN addgroup --system --gid 1001 nodejs \
-    && adduser --system --uid 1001 nextjs
-COPY --from=build /app/public ./public
-COPY --from=build --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=build --chown=nextjs:nodejs /app/.next/static ./.next/static
-USER nextjs
+    PORT=3000
+COPY package.json bun.lock tsconfig.json ./
+RUN bun install --frozen-lockfile --production
+COPY src ./src
+COPY --from=build /app/dist/client ./dist/client
+USER bun
 EXPOSE 3000
-CMD ["node", "server.js"]
+CMD ["bun", "src/server/bun.ts"]

@@ -63,6 +63,7 @@ describe('fetchMonitors', () => {
             mwindows: '1',
             offset: '0',
             response_times: '1',
+            response_times_average: '15',
             response_times_end_date: '200',
             response_times_start_date: '50',
         })

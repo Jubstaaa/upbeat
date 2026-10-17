@@ -1,18 +1,8 @@
-'use client'
-
-import { useCallback } from 'react'
-
-import { useRouter } from 'next/navigation'
-
 import { Button } from '@/components/ui/button'
 
-export default function ErrorScreen() {
-    const router = useRouter()
+import type { ErrorScreenProps } from './error-screen.types'
 
-    const handleRetry = useCallback(() => {
-        router.refresh()
-    }, [router])
-
+export default function ErrorScreen({ onRetry }: ErrorScreenProps) {
     return (
         <main className="mx-auto max-w-xl px-4 py-16">
             <h1 className="text-2xl font-semibold tracking-tight">
@@ -21,7 +11,7 @@ export default function ErrorScreen() {
             <p className="mt-2 text-muted-foreground">
                 We could not reach UptimeRobot just now. This is usually brief.
             </p>
-            <Button className="mt-6" variant="outline" onClick={handleRetry}>
+            <Button className="mt-6" variant="outline" onClick={onRetry}>
                 Try again
             </Button>
         </main>

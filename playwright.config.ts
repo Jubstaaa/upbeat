@@ -8,8 +8,8 @@ export default defineConfig({
     testDir: './e2e',
     use: { baseURL: `http://localhost:${PORT}` },
     webServer: {
-        command: `bun run start -p ${PORT}`,
-        env: { DEMO: 'true' },
+        command: 'bun run start',
+        env: { DEMO: 'true', PORT: String(PORT) },
         reuseExistingServer: !process.env.CI,
         url: `http://localhost:${PORT}`,
     },

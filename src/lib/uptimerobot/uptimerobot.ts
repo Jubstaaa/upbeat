@@ -8,6 +8,7 @@ const ENDPOINT = 'https://api.uptimerobot.com/v2/getMonitors'
 const PAGE_SIZE = 50
 const TIMEOUT_MS = 10_000
 const DOWN_LOGS = '1'
+const RESPONSE_TIME_AVERAGE_MINUTES = 15
 
 export class UptimeRobotKeyError extends Error {
     constructor() {
@@ -33,6 +34,7 @@ function buildBody(
         mwindows: '1',
         offset: String(offset),
         response_times: '1',
+        response_times_average: String(RESPONSE_TIME_AVERAGE_MINUTES),
         response_times_end_date: String(query.now),
         response_times_start_date: String(query.responseTimesStart),
     })
