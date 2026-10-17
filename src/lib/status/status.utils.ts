@@ -1,4 +1,4 @@
-import slugifyText from 'slugify'
+import slugifyText from '@sindresorhus/slugify'
 
 import type {
     MonitorQuery,
@@ -66,7 +66,7 @@ export function parseName(friendlyName: string): ParsedName {
 }
 
 export function slugify(value: string): string {
-    return slugifyText(value, { lower: true, strict: true }) || 'monitor'
+    return slugifyText(value) || 'monitor'
 }
 
 function uniqueIds(names: string[]): string[] {

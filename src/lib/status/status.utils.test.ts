@@ -115,6 +115,7 @@ describe('slugify', () => {
         expect(slugify('Public API (v2)')).toBe('public-api-v2')
         expect(slugify('Café')).toBe('cafe')
         expect(slugify('!!!')).toBe('monitor')
+        expect(slugify('beta.example.com')).toBe('beta-example-com')
     })
 })
 
