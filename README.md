@@ -42,6 +42,12 @@
 
 You need a **read-only API key**: UptimeRobot → [Integrations & API](https://dashboard.uptimerobot.com/integrations) → Read-only API key.
 
+### Vercel
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FJubstaaa%2Fupbeat&env=UPTIMEROBOT_API_KEY&envDescription=Read-only%20API%20key%20from%20UptimeRobot%20%E2%86%92%20Integrations%20%26%20API&envLink=https%3A%2F%2Fdashboard.uptimerobot.com%2Fintegrations&project-name=upbeat&repository-name=upbeat)
+
+The page is served as static files and the API runs as one Node.js function.
+
 ### Cloudflare Workers
 
 [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Jubstaaa/upbeat)
@@ -122,7 +128,6 @@ On Cloudflare the same code runs as one Worker with static assets; in Docker it 
 - Data is at most a minute behind UptimeRobot, which itself checks every 5 minutes on the free plan.
 - One UptimeRobot account per deployment; every monitor the key can read is shown. To hide a monitor, use a separate UptimeRobot account or remove it.
 - The cache lives in each server instance. On Cloudflare, several instances can each refresh once a minute, which stays well inside UptimeRobot's free-plan limit of 10 requests a minute for a personal page.
-- Deploying to Vercel is not supported yet.
 
 ## Development
 
