@@ -4,8 +4,14 @@ export interface UptimeBarsProps {
     name: string
 }
 
-export interface HoveredBar {
+export interface ActiveBar {
     index: number
+    isTouch: boolean
     left: number
     width: number
+}
+
+export interface UptimeBarsDayProps {
+    dayStart: number
+    value: null | number
 }

@@ -79,3 +79,24 @@ test('skips the expand animation when motion is reduced', async ({ page }) => {
     })
     expect(opacity).toBe('1')
 })
+
+test.describe('on a phone', () => {
+    test.use({
+        hasTouch: true,
+        isMobile: true,
+        viewport: { height: 800, width: 375 },
+    })
+
+    test('shows the day when a bar is tapped', async ({ page }) => {
+        await page.goto('/')
+        const bars = page.locator('[role="img"]').first()
+        const day = page.getByRole('dialog')
+        await bars.locator('[data-index="89"]').tap()
+        await expect(day).toContainText(/uptime|No data/)
+        const today = await day.textContent()
+        await bars.locator('[data-index="80"]').tap()
+        await expect(day).not.toHaveText(today ?? '')
+        await page.getByRole('heading', { level: 1 }).tap()
+        await expect(day).toBeHidden()
+    })
+})
