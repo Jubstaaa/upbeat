@@ -1,0 +1,62 @@
+{
+    "name": "upbeat",
+    "version": "1.0.0",
+    "private": true,
+    "description": "A beautiful, animated status page for UptimeRobot. Deploy to Vercel, Cloudflare or Docker with one API key.",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Jubstaaa/upbeat.git"
+    },
+    "engines": {
+        "node": ">=22.12"
+    },
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+        "preview:cf": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+        "lint": "eslint",
+        "format": "prettier . --write",
+        "format:check": "prettier . --check",
+        "type-check": "next typegen && tsc --noEmit",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:e2e": "playwright test"
+    },
+    "dependencies": {
+        "@tanstack/react-query": "^5.104.3",
+        "clsx": "^2.1.1",
+        "motion": "^14.3.0",
+        "next": "^16.4.2",
+        "react": "^19.3.1",
+        "react-dom": "^19.3.1",
+        "zod": "^4.6.7"
+    },
+    "devDependencies": {
+        "@opennextjs/cloudflare": "^1.20.12",
+        "@playwright/test": "^1.64.1",
+        "@tailwindcss/postcss": "^4.3.3",
+        "@types/node": "^24.19.2",
+        "@types/react": "^19.3.0",
+        "@types/react-dom": "^19.3.0",
+        "eslint": "^9.39.5",
+        "eslint-config-next": "^16.4.2",
+        "eslint-config-prettier": "^10.1.8",
+        "eslint-import-resolver-typescript": "^4.4.5",
+        "eslint-plugin-import": "^2.32.0",
+        "eslint-plugin-perfectionist": "^5.12.1",
+        "eslint-plugin-prettier": "^5.5.7",
+        "eslint-plugin-react": "^7.37.5",
+        "globals": "^17.13.0",
+        "postcss": "^8.5.30",
+        "prettier": "^3.9.10",
+        "prettier-plugin-tailwindcss": "^0.8.1",
+        "tailwindcss": "^4.3.3",
+        "typescript": "^5.9.3",
+        "vite": "^8.3.4",
+        "vitest": "^5.0.5",
+        "wrangler": "^4.151.1"
+    }
+}

@@ -1,0 +1,114 @@
+@import 'tailwindcss';
+
+@theme {
+    --color-canvas: #fbfbfa;
+    --color-surface: #ffffff;
+    --color-line: #e8e8e5;
+    --color-ink: #18181b;
+    --color-muted: #71717a;
+    --color-faint: #a1a1aa;
+    --color-up: #22a06b;
+    --color-warn: #e2a03f;
+    --color-down: #e5484d;
+    --color-maintenance: #3e8ef7;
+    --color-empty: #e4e4e7;
+
+    --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+    --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+    --animate-beat: beat 1.6s ease-in-out infinite;
+    --animate-ring: ring 1.6s ease-out infinite;
+    --animate-ekg: ekg 2.4s linear infinite;
+    --animate-trace: trace 1.6s linear infinite;
+    --animate-blink: blink 1s steps(2, start) infinite;
+    --animate-rise: rise 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+
+    @keyframes beat {
+        0%,
+        20%,
+        40%,
+        100% {
+            transform: scale(1);
+        }
+        10% {
+            transform: scale(1.35);
+        }
+        30% {
+            transform: scale(1.2);
+        }
+    }
+
+    @keyframes ring {
+        from {
+            opacity: 0.6;
+            transform: scale(1);
+        }
+        to {
+            opacity: 0;
+            transform: scale(2.8);
+        }
+    }
+
+    @keyframes ekg {
+        from {
+            stroke-dashoffset: 600;
+        }
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    @keyframes trace {
+        from {
+            stroke-dashoffset: 44;
+        }
+        to {
+            stroke-dashoffset: 0;
+        }
+    }
+
+    @keyframes blink {
+        to {
+            visibility: hidden;
+        }
+    }
+
+    @keyframes rise {
+        from {
+            opacity: 0;
+            transform: scaleY(0);
+        }
+        to {
+            opacity: 1;
+            transform: scaleY(1);
+        }
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-canvas: #0b0b0c;
+        --color-surface: #121214;
+        --color-line: #232326;
+        --color-ink: #ededef;
+        --color-muted: #8b8b93;
+        --color-faint: #5c5c63;
+        --color-up: #3dd68c;
+        --color-warn: #f1b44c;
+        --color-down: #ff6369;
+        --color-maintenance: #5ea2ff;
+        --color-empty: #26262a;
+    }
+}
+
+:root[data-accent] {
+    --color-up: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+    }
+}

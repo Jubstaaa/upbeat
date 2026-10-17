@@ -1,0 +1,10 @@
+.next
+.open-next
+.wrangler
+.superpowers
+node_modules
+package-lock.json
+playwright-report
+test-results
+assets
+next-env.d.ts

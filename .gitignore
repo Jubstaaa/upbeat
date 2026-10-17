@@ -1,0 +1,16 @@
+node_modules
+.next
+.open-next
+.wrangler
+.superpowers
+out
+playwright-report
+test-results
+next-env.d.ts
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+.dev.vars
+!.dev.vars.example
+.DS_Store
