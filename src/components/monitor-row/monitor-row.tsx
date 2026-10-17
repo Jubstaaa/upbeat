@@ -42,7 +42,7 @@ export default function MonitorRow({
         <Collapsible asChild open={isOpen} onOpenChange={handleToggle}>
             <li
                 ref={rowRef}
-                className="scroll-mt-4 px-5.5 py-4.5 not-first:border-t not-first:border-border max-sm:p-4"
+                className="scroll-mt-4 px-5.5 py-4.5 [contain-intrinsic-size:auto_140px] [content-visibility:auto] not-first:border-t not-first:border-border max-sm:p-4"
                 id={monitor.id}>
                 <CollapsibleTrigger className="mb-3 flex w-full items-center gap-2.5 text-left">
                     <MonitorRowPulse state={monitor.state} />
