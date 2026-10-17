@@ -11,4 +11,11 @@
     "observability": {
         "enabled": true,
     },
+    "env": {
+        "production": {
+            "name": "upbeat",
+            "workers_dev": false,
+            "preview_urls": false,
+        },
+    },
 }

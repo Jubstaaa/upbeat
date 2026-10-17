@@ -54,6 +54,8 @@ bunx wrangler secret put UPTIMEROBOT_API_KEY
 bun run deploy
 ```
 
+Serving it from your own domain? Deploy with `CLOUDFLARE_ENV=production bun run deploy` to turn off the `workers.dev` and preview URLs (the `production` environment in `wrangler.jsonc` deploys the same `upbeat` Worker).
+
 ### Docker
 
 ```sh
