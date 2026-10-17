@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 
+import IncidentList from '@/components/incident-list'
+import MaintenanceBanner from '@/components/maintenance-banner'
 import MonitorGroup from '@/components/monitor-group'
 import SiteFooter from '@/components/site-footer'
 import SiteHeader from '@/components/site-header'
@@ -57,6 +59,7 @@ export default function StatusPage({
                 title={title}
                 updatedAt={data.updatedAt}
             />
+            <MaintenanceBanner at={data.updatedAt} windows={data.maintenance} />
             <SummaryCard data={data} />
             {hasMonitors ? (
                 data.groups.map(group => (
@@ -74,6 +77,7 @@ export default function StatusPage({
                     here.
                 </p>
             )}
+            <IncidentList incidents={data.incidents} />
             <SiteFooter />
         </main>
     )

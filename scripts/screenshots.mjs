@@ -9,17 +9,17 @@ const shots = [
     {
         colorScheme: 'light',
         name: 'light',
-        viewport: { height: 1100, width: 1100 },
+        viewport: { height: 2000, width: 1100 },
     },
     {
         colorScheme: 'dark',
         name: 'dark',
-        viewport: { height: 1100, width: 1100 },
+        viewport: { height: 2000, width: 1100 },
     },
     {
         colorScheme: 'dark',
         name: 'mobile',
-        viewport: { height: 900, width: 390 },
+        viewport: { height: 2400, width: 390 },
     },
 ]
 
@@ -39,7 +39,6 @@ for (const shot of shots) {
     await page.goto(url, { waitUntil: 'networkidle' })
     await page.waitForTimeout(3_000)
     await page.screenshot({
-        fullPage: true,
         path: `${outDir}/${shot.name}.png`,
     })
     const hasScroll = await page.evaluate(
