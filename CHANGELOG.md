@@ -2,6 +2,17 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.3] - 2026-10-17
+
+### Fixed
+
+- On phones, tapping a day in the uptime bars shows its date and uptime; tapping elsewhere closes it.
+
+### Changed
+
+- Faster first load: Motion's animation code loads in its own chunk, so the main script is about 70 kB smaller.
+- CI and release workflows use the Node 24 versions of their actions.
+
 ## [1.0.2] - 2026-10-17
 
 ### Added
@@ -33,6 +44,7 @@ All notable changes to this project are documented here. The format follows [Kee
 - Runs on Cloudflare Workers' free plan: the page is static, and the Hono API answers `/api/status`, the badge and the feed from a one-minute edge cache.
 - One-click Deploy to Cloudflare button, and a multi-arch Docker image on ghcr.io that runs on Bun.
 
+[1.0.3]: https://github.com/Jubstaaa/upbeat/releases/tag/v1.0.3
 [1.0.2]: https://github.com/Jubstaaa/upbeat/releases/tag/v1.0.2
 [1.0.1]: https://github.com/Jubstaaa/upbeat/releases/tag/v1.0.1
 [1.0.0]: https://github.com/Jubstaaa/upbeat/releases/tag/v1.0.0
