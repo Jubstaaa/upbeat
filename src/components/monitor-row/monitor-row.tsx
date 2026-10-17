@@ -1,8 +1,14 @@
 import { useCallback, useEffect, useRef } from 'react'
 
-import { AnimatePresence, motion } from 'motion/react'
+import { ChevronDown } from 'lucide-react'
 
 import ResponseSparkline from '@/components/response-sparkline/response-sparkline'
+import { Badge } from '@/components/ui/badge'
+import {
+    Collapsible,
+    CollapsibleContent,
+    CollapsibleTrigger,
+} from '@/components/ui/collapsible'
 import UptimeBars from '@/components/uptime-bars/uptime-bars'
 import { formatPercent } from '@/lib/format/format'
 import { cn } from '@/lib/utils/utils'
@@ -11,9 +17,6 @@ import MonitorRowDetails from './monitor-row-details'
 import MonitorRowPulse from './monitor-row-pulse'
 import type { MonitorRowProps } from './monitor-row.types'
 
-const CLOSED = { height: 0, opacity: 0 }
-const OPEN = { height: 'auto', opacity: 1 }
-
 export default function MonitorRow({
     dayStarts,
     isOpen,
@@ -21,8 +24,6 @@ export default function MonitorRow({
     onToggle,
 }: MonitorRowProps) {
     const rowRef = useRef<HTMLLIElement>(null)
-
-    const detailsId = `${monitor.id}-details`
 
     const handleToggle = useCallback(
         () => onToggle(monitor.id),
@@ -38,65 +39,43 @@ export default function MonitorRow({
     }, [isOpen])
 
     return (
-        <li
-            ref={rowRef}
-            className="scroll-mt-4 px-5.5 py-4.5 not-first:border-t not-first:border-line max-sm:p-4"
-            id={monitor.id}>
-            <button
-                aria-controls={detailsId}
-                aria-expanded={isOpen}
-                className="mb-3 flex w-full items-center gap-2.5 text-left"
-                type="button"
-                onClick={handleToggle}>
-                <MonitorRowPulse state={monitor.state} />
-                <span className="min-w-0 flex-1 truncate font-medium">
-                    {monitor.name}
-                </span>
-                {monitor.state === 'paused' && (
-                    <span className="rounded-full bg-empty px-2 py-0.5 text-xs text-muted">
-                        Paused
+        <Collapsible asChild open={isOpen} onOpenChange={handleToggle}>
+            <li
+                ref={rowRef}
+                className="scroll-mt-4 px-5.5 py-4.5 not-first:border-t not-first:border-border max-sm:p-4"
+                id={monitor.id}>
+                <CollapsibleTrigger className="mb-3 flex w-full items-center gap-2.5 text-left">
+                    <MonitorRowPulse state={monitor.state} />
+                    <span className="min-w-0 flex-1 truncate font-medium">
+                        {monitor.name}
                     </span>
-                )}
-                <ResponseSparkline
-                    className="text-faint max-sm:hidden"
-                    points={monitor.responseTimes}
+                    {monitor.state === 'paused' && (
+                        <Badge variant="secondary">Paused</Badge>
+                    )}
+                    <ResponseSparkline
+                        className="text-faint max-sm:hidden"
+                        points={monitor.responseTimes}
+                    />
+                    <span className="font-mono text-sm text-muted-foreground">
+                        {formatPercent(monitor.uptime)}
+                    </span>
+                    <ChevronDown
+                        aria-hidden
+                        className={cn(
+                            'size-4 flex-none text-faint transition-transform',
+                            isOpen && 'rotate-180'
+                        )}
+                    />
+                </CollapsibleTrigger>
+                <UptimeBars
+                    days={monitor.days}
+                    dayStarts={dayStarts}
+                    name={monitor.name}
                 />
-                <span className="font-mono text-sm text-muted">
-                    {formatPercent(monitor.uptime)}
-                </span>
-                <svg
-                    aria-hidden
-                    fill="none"
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    className={cn(
-                        'size-4 flex-none text-faint transition-transform',
-                        isOpen && 'rotate-180'
-                    )}>
-                    <path d="m6 9 6 6 6-6" />
-                </svg>
-            </button>
-            <UptimeBars
-                days={monitor.days}
-                dayStarts={dayStarts}
-                name={monitor.name}
-            />
-            <AnimatePresence initial={false}>
-                {isOpen && (
-                    <motion.div
-                        key="details"
-                        animate={OPEN}
-                        className="overflow-hidden"
-                        exit={CLOSED}
-                        id={detailsId}
-                        initial={CLOSED}>
-                        <MonitorRowDetails monitor={monitor} />
-                    </motion.div>
-                )}
-            </AnimatePresence>
-        </li>
+                <CollapsibleContent className="overflow-hidden data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down">
+                    <MonitorRowDetails monitor={monitor} />
+                </CollapsibleContent>
+            </li>
+        </Collapsible>
     )
 }

@@ -1,17 +1,30 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
 
 @theme {
-    --color-canvas: #fbfbfa;
-    --color-surface: #ffffff;
-    --color-line: #e8e8e5;
-    --color-ink: #18181b;
-    --color-muted: #71717a;
+    --color-background: #fbfbfa;
+    --color-foreground: #18181b;
+    --color-card: #ffffff;
+    --color-card-foreground: #18181b;
+    --color-popover: #ffffff;
+    --color-popover-foreground: #18181b;
+    --color-primary: #18181b;
+    --color-primary-foreground: #fbfbfa;
+    --color-secondary: #f4f4f5;
+    --color-secondary-foreground: #18181b;
+    --color-accent: #f4f4f5;
+    --color-accent-foreground: #18181b;
+    --color-muted: #e4e4e7;
+    --color-muted-foreground: #71717a;
+    --color-destructive: #e5484d;
+    --color-border: #e8e8e5;
+    --color-input: #e8e8e5;
+    --color-ring: #a1a1aa;
     --color-faint: #a1a1aa;
     --color-up: #22a06b;
     --color-warn: #e2a03f;
     --color-down: #e5484d;
     --color-maintenance: #3e8ef7;
-    --color-empty: #e4e4e7;
 
     --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
     --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
@@ -87,17 +100,29 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --color-canvas: #0b0b0c;
-        --color-surface: #121214;
-        --color-line: #232326;
-        --color-ink: #ededef;
-        --color-muted: #8b8b93;
+        --color-background: #0b0b0c;
+        --color-foreground: #ededef;
+        --color-card: #121214;
+        --color-card-foreground: #ededef;
+        --color-popover: #121214;
+        --color-popover-foreground: #ededef;
+        --color-primary: #ededef;
+        --color-primary-foreground: #0b0b0c;
+        --color-secondary: #1c1c1f;
+        --color-secondary-foreground: #ededef;
+        --color-accent: #1c1c1f;
+        --color-accent-foreground: #ededef;
+        --color-muted: #26262a;
+        --color-muted-foreground: #8b8b93;
+        --color-destructive: #ff6369;
+        --color-border: #232326;
+        --color-input: #2a2a2e;
+        --color-ring: #5c5c63;
         --color-faint: #5c5c63;
         --color-up: #3dd68c;
         --color-warn: #f1b44c;
         --color-down: #ff6369;
         --color-maintenance: #5ea2ff;
-        --color-empty: #26262a;
     }
 }
 

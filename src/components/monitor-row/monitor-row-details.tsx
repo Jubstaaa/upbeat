@@ -8,7 +8,9 @@ export default function MonitorRowDetails({ monitor }: MonitorRowDetailsProps) {
     return (
         <div className="pt-5">
             <div className="mb-2 flex items-baseline justify-between gap-4 text-sm">
-                <span className="text-muted">Response time, last 24 hours</span>
+                <span className="text-muted-foreground">
+                    Response time, last 24 hours
+                </span>
                 {monitor.averageResponseTime !== null && (
                     <span className="font-mono">
                         {monitor.averageResponseTime} ms avg
@@ -22,19 +24,19 @@ export default function MonitorRowDetails({ monitor }: MonitorRowDetailsProps) {
                     size="large"
                 />
             ) : (
-                <p className="text-sm text-muted">
+                <p className="text-sm text-muted-foreground">
                     No response times recorded yet.
                 </p>
             )}
-            <h3 className="mt-5 mb-2 text-sm text-muted">
+            <h3 className="mt-5 mb-2 text-sm text-muted-foreground">
                 Outages, last 90 days
             </h3>
             {monitor.outages.length === 0 ? (
-                <p className="text-sm text-muted">
+                <p className="text-sm text-muted-foreground">
                     No outages in the last 90 days.
                 </p>
             ) : (
-                <ul className="divide-y divide-line text-sm">
+                <ul className="divide-y divide-border text-sm">
                     {monitor.outages.map(outage => (
                         <li
                             key={outage.start}
@@ -45,7 +47,7 @@ export default function MonitorRowDetails({ monitor }: MonitorRowDetailsProps) {
                                     'font-mono',
                                     outage.end === null
                                         ? 'text-down'
-                                        : 'text-muted'
+                                        : 'text-muted-foreground'
                                 )}>
                                 {formatOutageDuration(outage)}
                             </span>

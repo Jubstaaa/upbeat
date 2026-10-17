@@ -1,4 +1,4 @@
-const CODE = 'rounded bg-empty px-1.5 py-0.5 font-mono text-sm'
+const CODE = 'rounded bg-muted px-1.5 py-0.5 font-mono text-sm'
 
 export default function SetupScreen() {
     return (
@@ -6,7 +6,7 @@ export default function SetupScreen() {
             <h1 className="text-2xl font-semibold tracking-tight">
                 Connect UptimeRobot
             </h1>
-            <p className="mt-2 text-muted">
+            <p className="mt-2 text-muted-foreground">
                 This status page needs a read-only UptimeRobot API key. If you
                 already set one, UptimeRobot rejected it.
             </p>

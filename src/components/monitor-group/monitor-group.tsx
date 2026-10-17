@@ -10,10 +10,10 @@ export default function MonitorGroup({
 }: MonitorGroupProps) {
     return (
         <section className="mb-12">
-            <h2 className="mb-3 text-sm font-medium text-muted">
+            <h2 className="mb-3 text-sm font-medium text-muted-foreground">
                 {group.name ?? 'Services'}
             </h2>
-            <ul className="rounded-xl border border-line bg-surface shadow-xs">
+            <ul className="rounded-xl border border-border bg-card shadow-xs">
                 {group.monitors.map(monitor => (
                     <MonitorRow
                         key={monitor.id}

@@ -72,7 +72,9 @@ test('skips the expand animation when motion is reduced', async ({ page }) => {
         row?.click()
         await new Promise(requestAnimationFrame)
         await new Promise(requestAnimationFrame)
-        const details = document.getElementById('public-api-details')
+        const details = document.querySelector(
+            '#public-api [data-slot="collapsible-content"]'
+        )
         return details ? getComputedStyle(details).opacity : null
     })
     expect(opacity).toBe('1')

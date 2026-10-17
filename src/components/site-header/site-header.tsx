@@ -43,7 +43,7 @@ export default function SiteHeader({
                     {title}
                 </span>
             </div>
-            <div className="flex flex-none flex-col items-end text-sm text-muted">
+            <div className="flex flex-none flex-col items-end text-sm text-muted-foreground">
                 <span>Updated {ago}</span>
                 {isStale && (
                     <span className="text-xs text-warn">

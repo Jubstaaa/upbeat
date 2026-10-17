@@ -27,7 +27,7 @@ export default function RootLayout({
             data-accent={accentColor ? '' : undefined}
             lang="en"
             style={accentStyle}>
-            <body className="bg-canvas font-sans text-ink antialiased">
+            <body className="bg-background font-sans text-foreground antialiased">
                 <Providers>{children}</Providers>
             </body>
         </html>

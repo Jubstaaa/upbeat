@@ -77,6 +77,7 @@ phone width, and include screenshots in the pull request.
 src/
 ├── app/            # Page, layout and the /api/status, /badge.svg, /feed.xml routes
 ├── components/     # One folder per component: status-page, summary-card, monitor-row, …
+│   └── ui/         # shadcn/ui primitives (tooltip, collapsible, button, badge)
 ├── lib/            # One folder per module: config, uptimerobot, status, demo, badge, feed, …
 └── providers/      # React Query and Motion providers
 e2e/                # Playwright smoke test (runs against DEMO=true)

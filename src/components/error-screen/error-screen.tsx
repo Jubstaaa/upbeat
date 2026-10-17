@@ -4,6 +4,8 @@ import { useCallback } from 'react'
 
 import { useRouter } from 'next/navigation'
 
+import { Button } from '@/components/ui/button'
+
 export default function ErrorScreen() {
     const router = useRouter()
 
@@ -16,15 +18,12 @@ export default function ErrorScreen() {
             <h1 className="text-2xl font-semibold tracking-tight">
                 Status is unavailable
             </h1>
-            <p className="mt-2 text-muted">
+            <p className="mt-2 text-muted-foreground">
                 We could not reach UptimeRobot just now. This is usually brief.
             </p>
-            <button
-                className="mt-6 rounded-lg border border-line bg-surface px-4 py-2 font-medium shadow-xs hover:bg-canvas"
-                type="button"
-                onClick={handleRetry}>
+            <Button className="mt-6" variant="outline" onClick={handleRetry}>
                 Try again
-            </button>
+            </Button>
         </main>
     )
 }

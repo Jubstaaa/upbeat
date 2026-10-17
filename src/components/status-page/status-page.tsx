@@ -72,7 +72,7 @@ export default function StatusPage({
                     />
                 ))
             ) : (
-                <p className="mb-12 rounded-xl border border-line bg-surface px-5.5 py-5 text-sm text-muted">
+                <p className="mb-12 rounded-xl border border-border bg-card px-5.5 py-5 text-sm text-muted-foreground">
                     No monitors yet. Add one in UptimeRobot and it will appear
                     here.
                 </p>

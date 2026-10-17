@@ -9,3 +9,15 @@ describe('cn', () => {
         ).toBe('a b c')
     })
 })
+
+describe('cn with Tailwind classes', () => {
+    it('lets a later class override a conflicting one', () => {
+        expect(cn('px-2 text-sm', 'px-4')).toBe('text-sm px-4')
+    })
+
+    it('keeps a stroke width and a stroke colour together', () => {
+        expect(cn('fill-none stroke-[1.5]', 'stroke-up')).toBe(
+            'fill-none stroke-[1.5] stroke-up'
+        )
+    })
+})

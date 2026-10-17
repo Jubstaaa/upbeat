@@ -25,7 +25,7 @@ export default function SummaryCard({ data }: SummaryCardProps) {
     return (
         <section
             aria-live="polite"
-            className="relative mb-10 flex items-center gap-3.5 overflow-hidden rounded-xl border border-line bg-surface px-5.5 py-5 shadow-xs max-sm:p-4">
+            className="relative mb-10 flex items-center gap-3.5 overflow-hidden rounded-xl border border-border bg-card px-5.5 py-5 shadow-xs max-sm:p-4">
             <span
                 className={cn(
                     'relative size-3 flex-none animate-beat rounded-full',
@@ -44,7 +44,7 @@ export default function SummaryCard({ data }: SummaryCardProps) {
                 <h1 className="text-lg font-semibold tracking-tight">
                     {OVERALL_TITLES[data.overall]}
                 </h1>
-                <p className="mt-0.5 text-sm text-muted">{detail}</p>
+                <p className="mt-0.5 text-sm text-muted-foreground">{detail}</p>
             </div>
             <SummaryCardHeartbeat state={data.overall} />
         </section>

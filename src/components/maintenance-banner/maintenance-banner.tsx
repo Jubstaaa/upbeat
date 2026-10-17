@@ -26,7 +26,7 @@ export default function MaintenanceBanner({
             <div className="font-medium text-maintenance">
                 {isActive ? 'Maintenance in progress' : 'Scheduled maintenance'}
             </div>
-            <div className="text-muted">
+            <div className="text-muted-foreground">
                 {next.name} · {formatDateTime(next.start)} –{' '}
                 {formatDateTime(next.end)}
             </div>

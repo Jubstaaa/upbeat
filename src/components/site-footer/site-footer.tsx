@@ -1,4 +1,4 @@
-const LINK = 'text-muted underline-offset-2 hover:underline'
+const LINK = 'text-muted-foreground underline-offset-2 hover:underline'
 
 export default function SiteFooter() {
     return (
