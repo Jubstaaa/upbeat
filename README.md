@@ -20,7 +20,8 @@
 
 - **It feels alive.** A heartbeat runs across the summary card and every row. It speeds up and turns red when something goes down, and flatlines on the service that is down.
 - **Your key stays on the server.** The browser only ever receives the numbers the page shows. UptimeRobot's read-only key can still list every monitor and your alert contacts, so upbeat never ships it to visitors.
-- **It is kind to rate limits.** One UptimeRobot call a minute, however many people are watching, shared by the page, the badge and the feed.
+- **It runs on Cloudflare's free plan.** The page is static files served straight from Cloudflare's edge; only `/api/status`, the badge and the feed run code, and they answer from a one-minute edge cache in a millisecond or two.
+- **It is kind to rate limits.** About one UptimeRobot refresh a minute per server, however many people are watching, shared by the page, the badge and the feed.
 - **Nothing to edit.** Configure everything with environment variables, group monitors by renaming them in UptimeRobot, and pull upstream updates without merge conflicts.
 
 ## Features
@@ -40,10 +41,6 @@
 ## Deploy
 
 You need a **read-only API key**: UptimeRobot → [Integrations & API](https://dashboard.uptimerobot.com/integrations) → Read-only API key.
-
-### Vercel
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FJubstaaa%2Fupbeat&env=UPTIMEROBOT_API_KEY&envDescription=Read-only%20API%20key%20from%20UptimeRobot%20%E2%86%92%20Integrations%20%26%20API&envLink=https%3A%2F%2Fdashboard.uptimerobot.com%2Fintegrations&project-name=upbeat&repository-name=upbeat)
 
 ### Cloudflare Workers
 
@@ -112,7 +109,9 @@ Subscribe to `https://status.example.com/feed.xml` in any feed reader to hear ab
 
 ## How it works
 
-The server calls UptimeRobot's `getMonitors` once a minute and keeps the result in memory. The page is rendered on the server with that data, so it arrives complete, then refreshes itself every minute from `/api/status`. If UptimeRobot is unreachable, the last good data keeps showing with a "Data may be out of date" note.
+upbeat is a React single-page app built with Vite, plus a small [Hono](https://hono.dev) API. The page is plain static files. The API calls UptimeRobot's `getMonitors` at most once a minute, keeps the result in memory and, on Cloudflare, in the edge cache, and returns only what the page shows. The page loads `/api/status` and refreshes it every minute. If UptimeRobot is unreachable, the last good data keeps showing with a "Data may be out of date" note.
+
+On Cloudflare the same code runs as one Worker with static assets; in Docker it runs on Bun, which serves both the API and the page.
 
 ## Known limits
 
@@ -120,13 +119,15 @@ The server calls UptimeRobot's `getMonitors` once a minute and keeps the result 
 - History is fixed at 90 days and days are in UTC.
 - Data is at most a minute behind UptimeRobot, which itself checks every 5 minutes on the free plan.
 - One UptimeRobot account per deployment; every monitor the key can read is shown. To hide a monitor, use a separate UptimeRobot account or remove it.
-- The cache lives in each server instance. On Cloudflare or Vercel, several instances can each call UptimeRobot once a minute, which stays well inside the free plan's limit of 10 requests a minute for a personal page.
+- The cache lives in each server instance. On Cloudflare, several instances can each refresh once a minute, which stays well inside UptimeRobot's free-plan limit of 10 requests a minute for a personal page.
+- Deploying to Vercel is not supported yet.
 
 ## Development
 
 ```sh
 bun install
-DEMO=true bun run dev
+echo 'DEMO=true' > .dev.vars
+bun run dev
 ```
 
 Checks: `bun run lint`, `bun run format:check`, `bun run type-check`, `bun run test`, and `bun run build && bun run test:e2e`. See [CONTRIBUTING.md](CONTRIBUTING.md).

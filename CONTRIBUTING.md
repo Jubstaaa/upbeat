@@ -35,13 +35,13 @@ case and why it would help.
 
 ```bash
 bun install
-cp .env.example .env.local
-DEMO=true bun run dev
+echo 'DEMO=true' > .dev.vars
+bun run dev
 ```
 
 `DEMO=true` serves built-in sample data, so you do not need an UptimeRobot key
 to work on the page. To use your own account, put a read-only key in
-`.env.local` as `UPTIMEROBOT_API_KEY`.
+`.dev.vars` as `UPTIMEROBOT_API_KEY` instead of `DEMO=true`.
 
 #### Checks
 
@@ -75,11 +75,13 @@ phone width, and include screenshots in the pull request.
 
 ```
 src/
-├── app/            # Page, layout and the /api/status, /badge.svg, /feed.xml routes
+├── main.tsx        # Client entry
+├── server/         # Hono API (/api/status, /badge.svg, /feed.xml), Cloudflare and Bun entries
+├── styles/         # Tailwind theme
 ├── components/     # One folder per component: status-page, summary-card, monitor-row, …
 │   └── ui/         # shadcn/ui primitives (tooltip, collapsible, button, badge)
 ├── lib/            # One folder per module: config, uptimerobot, status, demo, badge, feed, …
-└── providers/      # React Query and Motion providers
+└── providers/      # React Query, Motion and tooltip providers
 e2e/                # Playwright smoke test (runs against DEMO=true)
 ```
 
