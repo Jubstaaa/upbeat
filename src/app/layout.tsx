@@ -2,8 +2,8 @@ import type { CSSProperties, ReactNode } from 'react'
 
 import { Inter, JetBrains_Mono } from 'next/font/google'
 
-import Providers from '@/components/providers'
-import { getConfig } from '@/lib/config'
+import { getConfig } from '@/lib/config/config'
+import Providers from '@/providers/providers'
 
 import './globals.css'
 

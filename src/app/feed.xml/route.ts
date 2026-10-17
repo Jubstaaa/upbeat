@@ -1,9 +1,9 @@
 import type { NextRequest } from 'next/server'
 
-import { getConfig } from '@/lib/config'
-import { renderFeed } from '@/lib/feed'
-import { getStatus } from '@/lib/status'
-import type { StatusResult } from '@/lib/status.types'
+import { getConfig } from '@/lib/config/config'
+import { renderFeed } from '@/lib/feed/feed'
+import { getStatus } from '@/lib/status/status'
+import type { StatusResult } from '@/lib/status/status.types'
 
 export async function GET(request: NextRequest) {
     const config = getConfig()

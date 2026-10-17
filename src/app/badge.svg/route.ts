@@ -1,8 +1,8 @@
 import type { NextRequest } from 'next/server'
 
-import { getBadgeContent, renderBadge } from '@/lib/badge'
-import { getStatus } from '@/lib/status'
-import type { StatusResult } from '@/lib/status.types'
+import { getBadgeContent, renderBadge } from '@/lib/badge/badge'
+import { getStatus } from '@/lib/status/status'
+import type { StatusResult } from '@/lib/status/status.types'
 
 export async function GET(request: NextRequest) {
     const result: StatusResult = await getStatus().catch(() => ({

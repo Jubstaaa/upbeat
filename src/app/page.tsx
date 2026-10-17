@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 
 import { connection } from 'next/server'
 
-import ErrorScreen from '@/components/error-screen'
-import SetupScreen from '@/components/setup-screen'
-import StatusPage from '@/components/status-page'
-import { getConfig } from '@/lib/config'
-import { getDocumentTitle, getFavicon } from '@/lib/overall'
-import { getStatus } from '@/lib/status'
+import ErrorScreen from '@/components/error-screen/error-screen'
+import SetupScreen from '@/components/setup-screen/setup-screen'
+import StatusPage from '@/components/status-page/status-page'
+import { getConfig } from '@/lib/config/config'
+import { getDocumentTitle, getFavicon } from '@/lib/overall/overall'
+import { getStatus } from '@/lib/status/status'
 
 export async function generateMetadata(): Promise<Metadata> {
     await connection()

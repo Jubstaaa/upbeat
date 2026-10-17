@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-import { getStatus } from '@/lib/status'
+import { getStatus } from '@/lib/status/status'
 
 export async function GET() {
     const result = await getStatus()

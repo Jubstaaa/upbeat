@@ -62,9 +62,10 @@ phone width, and include screenshots in the pull request.
 
 - Prettier and ESLint are the source of truth; `bun run format` and
   `bunx eslint --fix .` fix most issues
-- Kebab-case file names, one component per file in `src/components/`, its
-  props in a `.types.ts` file beside it
-- Anything that talks to UptimeRobot lives in `src/lib/uptimerobot.ts`; the UI,
+- Kebab-case file names. Every component and every `lib` module has its own
+  folder with flat files inside: `monitor-row/monitor-row.tsx`,
+  `monitor-row.types.ts`, and sub-components such as `monitor-row-details.tsx`
+- Anything that talks to UptimeRobot lives in `src/lib/uptimerobot/`; the UI,
   badge and feed only see `StatusData`
 - No comments in source unless the logic is genuinely non-obvious
 - Add a test for every behaviour change. When you add a test for existing
@@ -75,8 +76,9 @@ phone width, and include screenshots in the pull request.
 ```
 src/
 ├── app/            # Page, layout and the /api/status, /badge.svg, /feed.xml routes
-├── components/     # The page, one file per component
-└── lib/            # Config, UptimeRobot client, transform, cache, badge, feed
+├── components/     # One folder per component: status-page, summary-card, monitor-row, …
+├── lib/            # One folder per module: config, uptimerobot, status, demo, badge, feed, …
+└── providers/      # React Query and Motion providers
 e2e/                # Playwright smoke test (runs against DEMO=true)
 ```
 
