@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { MotionConfig, useReducedMotion } from 'motion/react'
+import { LazyMotion, MotionConfig, useReducedMotion } from 'motion/react'
 
 import { TooltipProvider } from '@/components/ui/tooltip'
 
@@ -10,6 +10,9 @@ import type { ProvidersProps } from './providers.types'
 const EASE = { duration: 0.25, ease: [0.2, 0.8, 0.2, 1] } as const
 const INSTANT = { duration: 0 }
 
+const loadMotionFeatures = () =>
+    import('./motion-features').then(module => module.default)
+
 export default function Providers({ children }: ProvidersProps) {
     const shouldReduceMotion = useReducedMotion()
 
@@ -17,11 +20,13 @@ export default function Providers({ children }: ProvidersProps) {
 
     return (
         <QueryClientProvider client={queryClient}>
-            <MotionConfig
-                reducedMotion="user"
-                transition={shouldReduceMotion ? INSTANT : EASE}>
-                <TooltipProvider>{children}</TooltipProvider>
-            </MotionConfig>
+            <LazyMotion strict features={loadMotionFeatures}>
+                <MotionConfig
+                    reducedMotion="user"
+                    transition={shouldReduceMotion ? INSTANT : EASE}>
+                    <TooltipProvider>{children}</TooltipProvider>
+                </MotionConfig>
+            </LazyMotion>
         </QueryClientProvider>
     )
 }

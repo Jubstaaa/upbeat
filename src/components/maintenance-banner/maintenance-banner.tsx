@@ -1,4 +1,4 @@
-import { motion } from 'motion/react'
+import * as m from 'motion/react-m'
 
 import { formatDateTime } from '@/lib/format/format'
 
@@ -18,7 +18,7 @@ export default function MaintenanceBanner({
     const isActive = next.start <= at && at < next.end
 
     return (
-        <motion.div
+        <m.div
             animate={SHOWN}
             className="mb-6 rounded-xl border border-maintenance/30 bg-maintenance/10 px-5 py-4 text-sm"
             initial={HIDDEN}
@@ -30,6 +30,6 @@ export default function MaintenanceBanner({
                 {next.name} · {formatDateTime(next.start)} –{' '}
                 {formatDateTime(next.end)}
             </div>
-        </motion.div>
+        </m.div>
     )
 }

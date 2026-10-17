@@ -1,6 +1,7 @@
 import { useId, useMemo } from 'react'
 
-import { motion, useReducedMotion } from 'motion/react'
+import { useReducedMotion } from 'motion/react'
+import * as m from 'motion/react-m'
 
 import { cn } from '@/lib/utils/utils'
 
@@ -67,7 +68,7 @@ export default function ResponseSparkline({
                     />
                 </>
             )}
-            <motion.path
+            <m.path
                 animate={{ pathLength: 1 }}
                 className="fill-none stroke-current stroke-[1.5]"
                 d={path}
