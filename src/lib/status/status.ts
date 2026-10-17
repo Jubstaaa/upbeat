@@ -15,7 +15,7 @@ import type {
 import { buildQuery, toStatusData } from './status.utils'
 
 const FRESH_MS = 60_000
-const RETRY_MS = 10_000
+const RETRY_MS = 5_000
 const HUNG_MS = 15_000
 
 export function createStatusSource({

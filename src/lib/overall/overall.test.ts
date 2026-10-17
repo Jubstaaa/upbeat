@@ -92,6 +92,19 @@ describe('getOverallDetail', () => {
     })
 })
 
+describe('getOverallDetail with unchecked monitors', () => {
+    it('does not count monitors waiting for their first check as up', () => {
+        expect(
+            getOverallDetail(
+                data([monitor('A', 'up'), monitor('B', 'pending')])
+            )
+        ).toBe('1 service is up, 1 waiting for its first check')
+        expect(getOverallDetail(data([monitor('A', 'pending')]))).toBe(
+            'Waiting for the first checks'
+        )
+    })
+})
+
 describe('isAlertState', () => {
     it('is true only for outages', () => {
         expect(isAlertState('degraded')).toBe(true)

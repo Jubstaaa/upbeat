@@ -38,6 +38,14 @@ export function getOverallDetail(data: StatusData): string {
     const down = watched.filter(monitor => monitor.state === 'down').length
     if (down > 0)
         return `${down} of ${watched.length} services ${down === 1 ? 'is' : 'are'} down`
+    const pending = watched.filter(
+        monitor => monitor.state === 'pending'
+    ).length
+    if (pending === watched.length) return 'Waiting for the first checks'
+    if (pending > 0) {
+        const up = watched.length - pending
+        return `${up} ${up === 1 ? 'service is' : 'services are'} up, ${pending} waiting for ${pending === 1 ? 'its' : 'their'} first check`
+    }
     return watched.length === 1
         ? 'The service is up'
         : `All ${watched.length} services are up`

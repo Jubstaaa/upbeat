@@ -79,16 +79,16 @@ describe('createStatusSource', () => {
         )
     })
 
-    it('reports an error when nothing has loaded yet, and retries after ten seconds', async () => {
+    it('reports an error when nothing has loaded yet, and retries after five seconds', async () => {
         vi.spyOn(console, 'error').mockImplementation(() => {})
         const { advance, fetchMonitors, source } = setup(async () =>
             Promise.reject(new Error('down'))
         )
         expect(await source()).toEqual({ kind: 'error' })
-        advance(5_000)
+        advance(2_000)
         await source()
         expect(fetchMonitors).toHaveBeenCalledTimes(1)
-        advance(6_000)
+        advance(4_000)
         await source()
         expect(fetchMonitors).toHaveBeenCalledTimes(2)
     })

@@ -69,14 +69,18 @@ export function slugify(value: string): string {
     return slugifyText(value) || 'monitor'
 }
 
-function uniqueIds(names: string[]): string[] {
-    const seen = new Map<string, number>()
-    return names.map(name => {
-        const base = slugify(name)
-        const count = (seen.get(base) ?? 0) + 1
-        seen.set(base, count)
-        return count === 1 ? base : `${base}-${count}`
+function uniqueIds(monitors: UptimeRobotMonitor[], names: string[]): string[] {
+    const slugs = names.map(slugify)
+    const oldest = new Map<string, number>()
+    slugs.forEach((slug, index) => {
+        const id = monitors[index].id
+        oldest.set(slug, Math.min(oldest.get(slug) ?? id, id))
     })
+    return slugs.map((slug, index) =>
+        oldest.get(slug) === monitors[index].id
+            ? slug
+            : `${slug}-${monitors[index].id}`
+    )
 }
 
 function compareGroups(a: string | null, b: string | null): number {
@@ -217,7 +221,10 @@ export function toStatusData(
             (a, b) =>
                 compareGroups(a.group, b.group) || a.name.localeCompare(b.name)
         )
-    const ids = uniqueIds(parsed.map(entry => entry.name))
+    const ids = uniqueIds(
+        parsed.map(entry => entry.monitor),
+        parsed.map(entry => entry.name)
+    )
     const monitors = parsed.map((entry, index) =>
         toMonitorStatus(entry.monitor, ids[index], entry.name, dayStarts)
     )

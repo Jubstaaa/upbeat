@@ -202,10 +202,10 @@ describe('toStatusData', () => {
 
     it('gives duplicate names distinct ids', () => {
         const ids = allMonitors([
-            makeMonitor({ friendly_name: 'EU / API' }),
-            makeMonitor({ friendly_name: 'US / API' }),
+            makeMonitor({ friendly_name: 'EU / API', id: 5 }),
+            makeMonitor({ friendly_name: 'US / API', id: 3 }),
         ]).map(monitor => monitor.id)
-        expect(ids).toEqual(['api', 'api-2'])
+        expect(ids).toEqual(['api-5', 'api'])
     })
 
     it('lists outages newest first and marks the current one ongoing', () => {

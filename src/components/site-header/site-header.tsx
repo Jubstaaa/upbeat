@@ -12,7 +12,7 @@ export default function SiteHeader({
     title,
     updatedAt,
 }: SiteHeaderProps) {
-    const [now, setNow] = useState(updatedAt * 1_000)
+    const [now, setNow] = useState(() => Date.now())
 
     const ago = useMemo(
         () => formatAgo(Math.max(0, Math.floor(now / 1_000) - updatedAt)),

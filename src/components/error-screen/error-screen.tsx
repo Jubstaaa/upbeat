@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button'
 
 import type { ErrorScreenProps } from './error-screen.types'
 
-export default function ErrorScreen({ onRetry }: ErrorScreenProps) {
+export default function ErrorScreen({ isRetrying, onRetry }: ErrorScreenProps) {
     return (
         <main className="mx-auto max-w-xl px-4 py-16">
             <h1 className="text-2xl font-semibold tracking-tight">
@@ -11,8 +11,12 @@ export default function ErrorScreen({ onRetry }: ErrorScreenProps) {
             <p className="mt-2 text-muted-foreground">
                 We could not reach UptimeRobot just now. This is usually brief.
             </p>
-            <Button className="mt-6" variant="outline" onClick={onRetry}>
-                Try again
+            <Button
+                className="mt-6"
+                disabled={isRetrying}
+                variant="outline"
+                onClick={onRetry}>
+                {isRetrying ? 'Trying…' : 'Try again'}
             </Button>
         </main>
     )

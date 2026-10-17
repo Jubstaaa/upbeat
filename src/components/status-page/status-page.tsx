@@ -23,6 +23,7 @@ export default function StatusPage() {
 
     const {
         data: response,
+        isFetching,
         isPending,
         refetch,
     } = useQuery({
@@ -63,7 +64,8 @@ export default function StatusPage() {
 
     if (isPending) return <StatusPageLoader />
     if (response?.result.kind === 'setup') return <SetupScreen />
-    if (!site || !data) return <ErrorScreen onRetry={handleRetry} />
+    if (!site || !data)
+        return <ErrorScreen isRetrying={isFetching} onRetry={handleRetry} />
 
     return (
         <main className="mx-auto max-w-3xl px-4 pt-14 pb-10 max-sm:pt-8">
