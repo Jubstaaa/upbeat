@@ -55,15 +55,8 @@ npm test
 npm run build && npm run test:e2e
 ```
 
-For UI changes, also look at the page in both themes and on a phone:
-
-```bash
-DEMO=true npx next start -p 3100 &
-node scripts/screenshots.mjs http://localhost:3100
-```
-
-The script saves `light.png`, `dark.png` and `mobile.png` to
-`test-results/screens/` and prints console errors and horizontal scrolling.
+For UI changes, also look at the page in both light and dark themes and at
+phone width, and include screenshots in the pull request.
 
 #### Code Style
 
@@ -85,7 +78,6 @@ src/
 ├── components/     # The page, one file per component
 └── lib/            # Config, UptimeRobot client, transform, cache, badge, feed
 e2e/                # Playwright smoke test (runs against DEMO=true)
-scripts/            # Screenshot and demo GIF helpers
 ```
 
 #### Commit Messages

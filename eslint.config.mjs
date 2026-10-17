@@ -151,12 +151,6 @@ const eslintConfig = defineConfig([
         },
     },
     {
-        files: ['scripts/**'],
-        rules: {
-            'no-console': 'off',
-        },
-    },
-    {
         files: ['**/*.types.ts', '**/*.d.ts'],
         rules: {
             'no-unused-vars': 'off',
