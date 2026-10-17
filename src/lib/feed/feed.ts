@@ -1,30 +1,21 @@
+import { Feed } from 'feed'
+
 import {
     formatDateTime,
     formatDuration,
     formatIncidentTitle,
 } from '@/lib/format/format'
-import { escapeXml } from '@/lib/xml/xml'
 
 import type { FeedEntry, FeedInput } from './feed.types'
 
-function toIso(seconds: number): string {
-    return new Date(seconds * 1_000).toISOString()
-}
-
-function renderEntry(entry: FeedEntry, siteUrl: string): string {
-    return [
-        '<entry>',
-        `<id>${escapeXml(entry.id)}</id>`,
-        `<title>${escapeXml(entry.title)}</title>`,
-        `<updated>${entry.updated}</updated>`,
-        `<link href="${escapeXml(siteUrl)}/"/>`,
-        `<summary>${escapeXml(entry.summary)}</summary>`,
-        '</entry>',
-    ].join('')
+function toDate(seconds: number): Date {
+    return new Date(seconds * 1_000)
 }
 
 export function renderFeed({ data, now, siteUrl, title }: FeedInput): string {
+    const link = `${siteUrl}/`
     const incidents: FeedEntry[] = (data?.incidents ?? []).map(incident => ({
+        date: toDate(incident.end ?? incident.start),
         id: `${siteUrl}/#incident-${incident.start}`,
         summary: `${incident.monitors.join(', ')}. Started ${formatDateTime(incident.start)}, ${
             incident.end === null
@@ -32,30 +23,33 @@ export function renderFeed({ data, now, siteUrl, title }: FeedInput): string {
                 : `lasted ${formatDuration(incident.end - incident.start)}`
         }.`,
         title: formatIncidentTitle(incident),
-        updated: toIso(incident.end ?? incident.start),
     }))
     const windows: FeedEntry[] = (data?.maintenance ?? []).map(window => ({
+        date: toDate(window.start),
         id: `${siteUrl}/#maintenance-${window.start}`,
         summary: `${formatDateTime(window.start)} to ${formatDateTime(window.end)}.`,
         title: `Scheduled maintenance: ${window.name}`,
-        updated: toIso(window.start),
     }))
-    const entries = [...incidents, ...windows].sort((a, b) =>
-        b.updated.localeCompare(a.updated)
-    )
-    const safeTitle = escapeXml(title)
-    const safeUrl = escapeXml(siteUrl)
 
-    return [
-        '<?xml version="1.0" encoding="utf-8"?>\n',
-        '<feed xmlns="http://www.w3.org/2005/Atom">',
-        `<id>${safeUrl}/</id>`,
-        `<title>${safeTitle}</title>`,
-        `<updated>${toIso(data?.updatedAt ?? now)}</updated>`,
-        `<author><name>${safeTitle}</name></author>`,
-        `<link href="${safeUrl}/"/>`,
-        `<link rel="self" href="${safeUrl}/feed.xml"/>`,
-        ...entries.map(entry => renderEntry(entry, siteUrl)),
-        '</feed>',
-    ].join('')
+    const feed = new Feed({
+        author: { name: title },
+        copyright: '',
+        feedLinks: { atom: `${siteUrl}/feed.xml` },
+        id: link,
+        link,
+        title,
+        updated: toDate(data?.updatedAt ?? now),
+    })
+    for (const entry of [...incidents, ...windows].sort(
+        (a, b) => b.date.getTime() - a.date.getTime()
+    )) {
+        feed.addItem({
+            date: entry.date,
+            description: entry.summary,
+            id: entry.id,
+            link,
+            title: entry.title,
+        })
+    }
+    return feed.atom1()
 }

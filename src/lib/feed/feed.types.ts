@@ -9,7 +9,7 @@ export interface FeedInput {
 
 export interface FeedEntry {
     id: string
+    date: Date
     summary: string
     title: string
-    updated: string
 }

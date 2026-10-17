@@ -24,7 +24,7 @@ describe('renderFeed', () => {
         expect(xml.match(/<entry>/g)).toHaveLength(
             data.incidents.length + data.maintenance.length
         )
-        expect(xml).toContain('<title>2 services were down</title>')
+        expect(xml).toContain('<![CDATA[2 services were down]]>')
     })
 
     it('lists newest entries first', () => {
@@ -35,7 +35,7 @@ describe('renderFeed', () => {
             title: 'S',
         })
         const updated = [
-            ...xml.matchAll(/<entry>.*?<updated>([^<]+)<\/updated>/g),
+            ...xml.matchAll(/<entry>[\s\S]*?<updated>([^<]+)<\/updated>/g),
         ].map(match => match[1])
         expect(updated).toEqual([...updated].sort().reverse())
     })

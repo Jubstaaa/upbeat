@@ -7,11 +7,10 @@ function points(values: number[]) {
 }
 
 function coordinates(path: string): number[][] {
-    return path.split(' ').reduce<number[][]>((all, token, index, tokens) => {
-        if (/^[ML]/.test(token))
-            all.push([Number(token.slice(1)), Number(tokens[index + 1])])
-        return all
-    }, [])
+    return [...path.matchAll(/[ML]([\d.]+),([\d.]+)/g)].map(match => [
+        Number(match[1]),
+        Number(match[2]),
+    ])
 }
 
 describe('buildSparkline', () => {

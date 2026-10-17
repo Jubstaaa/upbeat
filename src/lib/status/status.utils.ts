@@ -1,3 +1,5 @@
+import slugifyText from 'slugify'
+
 import type {
     MonitorQuery,
     UptimeRobotMonitor,
@@ -64,13 +66,7 @@ export function parseName(friendlyName: string): ParsedName {
 }
 
 export function slugify(value: string): string {
-    const slug = value
-        .normalize('NFKD')
-        .replace(/[̀-ͯ]/g, '')
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-+|-+$/g, '')
-    return slug || 'monitor'
+    return slugifyText(value, { lower: true, strict: true }) || 'monitor'
 }
 
 function uniqueIds(names: string[]): string[] {

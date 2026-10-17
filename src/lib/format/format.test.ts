@@ -43,9 +43,9 @@ describe('formatAgo', () => {
     it.each([
         [0, 'just now'],
         [59, 'just now'],
-        [60, '1 min ago'],
-        [7_200, '2 h ago'],
-        [172_800, '2 d ago'],
+        [60, 'a minute ago'],
+        [7_200, '2 hours ago'],
+        [172_800, '2 days ago'],
     ])('%s seconds → %s', (seconds, expected) => {
         expect(formatAgo(seconds)).toBe(expected)
     })

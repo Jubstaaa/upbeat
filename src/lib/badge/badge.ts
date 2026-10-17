@@ -1,12 +1,10 @@
+import { makeBadge } from 'badge-maker'
+
 import { formatPercent } from '@/lib/format/format'
 import { OVERALL_COLORS, UNKNOWN_COLOR } from '@/lib/overall/overall'
 import type { MonitorState, StatusResult } from '@/lib/status/status.types'
-import { escapeXml } from '@/lib/xml/xml'
 
 import type { BadgeContent } from './badge.types'
-
-const CHARACTER_WIDTH = 6.5
-const PADDING = 10
 
 const MONITOR_COLORS: Record<MonitorState, string> = {
     down: OVERALL_COLORS.outage,
@@ -47,25 +45,6 @@ export function getBadgeContent(
     }
 }
 
-function textWidth(text: string): number {
-    return Math.round(text.length * CHARACTER_WIDTH + PADDING * 2)
-}
-
-export function renderBadge({ color, label, message }: BadgeContent): string {
-    const labelWidth = textWidth(label)
-    const messageWidth = textWidth(message)
-    const width = labelWidth + messageWidth
-    const safeLabel = escapeXml(label)
-    const safeMessage = escapeXml(message)
-    return [
-        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="20" role="img" aria-label="${safeLabel}: ${safeMessage}">`,
-        `<title>${safeLabel}: ${safeMessage}</title>`,
-        '<linearGradient id="s" x2="0" y2="100%"><stop offset="0" stop-color="#bbb" stop-opacity=".1"/><stop offset="1" stop-opacity=".1"/></linearGradient>',
-        `<clipPath id="r"><rect width="${width}" height="20" rx="3" fill="#fff"/></clipPath>`,
-        `<g clip-path="url(#r)"><rect width="${labelWidth}" height="20" fill="#555"/><rect x="${labelWidth}" width="${messageWidth}" height="20" fill="${color}"/><rect width="${width}" height="20" fill="url(#s)"/></g>`,
-        '<g fill="#fff" text-anchor="middle" font-family="Verdana,Geneva,DejaVu Sans,sans-serif" font-size="11">',
-        `<text x="${labelWidth / 2}" y="14">${safeLabel}</text>`,
-        `<text x="${labelWidth + messageWidth / 2}" y="14">${safeMessage}</text>`,
-        '</g></svg>',
-    ].join('')
+export function renderBadge(content: BadgeContent): string {
+    return makeBadge({ ...content, style: 'flat' })
 }
