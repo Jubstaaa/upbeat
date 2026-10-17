@@ -37,7 +37,7 @@ for (const shot of shots) {
         if (message.type() === 'error') errors.push(message.text())
     })
     await page.goto(url, { waitUntil: 'networkidle' })
-    await page.waitForTimeout(1_500)
+    await page.waitForTimeout(3_000)
     await page.screenshot({
         fullPage: true,
         path: `${outDir}/${shot.name}.png`,
