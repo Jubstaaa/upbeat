@@ -92,7 +92,7 @@ Live from [status.webgooh.tech](https://status.webgooh.tech):
 
 [![status](https://status.webgooh.tech/badge.svg)](https://status.webgooh.tech)
 [![webgooh.tech](https://status.webgooh.tech/badge.svg?monitor=webgooh-tech)](https://status.webgooh.tech/#webgooh-tech)
-[![waqt-api.haccoo.dev](https://status.webgooh.tech/badge.svg?monitor=waqt-api-haccoo-dev)](https://status.webgooh.tech/#waqt-api-haccoo-dev)
+[![ilkerbalcilar.com](https://status.webgooh.tech/badge.svg?monitor=ilkerbalcilar-com)](https://status.webgooh.tech/#ilkerbalcilar-com)
 
 Add them to your own README:
 
