@@ -27,7 +27,8 @@ const badgeQuery = z.object({
 const SECURITY_HEADERS = secureHeaders({
     contentSecurityPolicy: {
         baseUri: ["'self'"],
-        connectSrc: ["'self'"],
+        // Cloudflare injects its Web Analytics beacon when the zone has it on.
+        connectSrc: ["'self'", 'https://cloudflareinsights.com'],
         defaultSrc: ["'self'"],
         // Vite inlines the smallest font subsets as data: URLs.
         fontSrc: ["'self'", 'data:'],
@@ -35,7 +36,7 @@ const SECURITY_HEADERS = secureHeaders({
         // SITE_LOGO may point at any https host.
         imgSrc: ["'self'", 'data:', 'https:'],
         objectSrc: ["'none'"],
-        scriptSrc: ["'self'"],
+        scriptSrc: ["'self'", 'https://static.cloudflareinsights.com'],
         styleSrc: ["'self'"],
     },
     // Badges are embedded as images on other sites.

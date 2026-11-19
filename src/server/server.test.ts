@@ -166,6 +166,16 @@ describe('security headers', () => {
         }
     })
 
+    it('allows Cloudflare Web Analytics, which Cloudflare injects', () => {
+        const csp = staticHeaders.get('content-security-policy') ?? ''
+        expect(csp).toMatch(
+            /script-src [^;]*https:\/\/static\.cloudflareinsights\.com/
+        )
+        expect(csp).toMatch(
+            /connect-src [^;]*https:\/\/cloudflareinsights\.com/
+        )
+    })
+
     it('lets other sites embed the badge', async () => {
         const response = await app(ok).request('/badge.svg')
         expect(response.headers.get('cross-origin-resource-policy')).toBe(
