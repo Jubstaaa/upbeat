@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
 
 test('renders the demo page without errors', async ({ page }) => {
@@ -48,6 +49,31 @@ test('fits a phone screen', async ({ page }) => {
         () => document.documentElement.scrollWidth > window.innerWidth
     )
     expect(overflows).toBe(false)
+})
+
+test('does not shift the layout while loading', async ({ page }) => {
+    await page.setViewportSize({ height: 800, width: 375 })
+    await page.goto('/', { waitUntil: 'networkidle' })
+    const shift = await page.evaluate(
+        () =>
+            new Promise<number>(resolve => {
+                new PerformanceObserver(list => {
+                    resolve(
+                        list
+                            .getEntries()
+                            .reduce(
+                                (sum, entry) =>
+                                    sum +
+                                    (entry as unknown as { value: number })
+                                        .value,
+                                0
+                            )
+                    )
+                }).observe({ buffered: true, type: 'layout-shift' })
+                setTimeout(() => resolve(0), 1_000)
+            })
+    )
+    expect(shift).toBeLessThan(0.01)
 })
 
 test('serves the badge and the feed', async ({ request }) => {
@@ -118,3 +144,13 @@ test.describe('on a phone', () => {
         await expect(day).toBeHidden()
     })
 })
+
+for (const colorScheme of ['light', 'dark'] as const) {
+    test(`has no axe violations in ${colorScheme} mode`, async ({ page }) => {
+        await page.emulateMedia({ colorScheme, reducedMotion: 'reduce' })
+        await page.goto('/')
+        await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+        const { violations } = await new AxeBuilder({ page }).analyze()
+        expect(violations.map(violation => violation.id)).toEqual([])
+    })
+}

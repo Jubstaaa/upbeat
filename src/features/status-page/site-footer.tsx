@@ -1,8 +1,9 @@
-const LINK = 'text-muted-foreground underline-offset-2 hover:underline'
+const LINK =
+    'text-foreground underline decoration-muted-foreground underline-offset-2 hover:decoration-foreground'
 
 export default function SiteFooter() {
     return (
-        <footer className="mt-10 flex flex-wrap gap-x-1.5 text-sm text-faint">
+        <footer className="mt-10 flex flex-wrap gap-x-1.5 text-sm text-muted-foreground">
             <span>
                 Monitored by{' '}
                 <a
