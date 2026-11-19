@@ -115,7 +115,7 @@ export default function UptimeBars({ days, dayStarts, name }: UptimeBarsProps) {
                     </Tooltip>
                 )}
             </div>
-            <div className="mt-2 flex justify-between text-xs text-faint">
+            <div className="mt-2 flex justify-between text-xs text-muted-foreground">
                 <span className="max-sm:hidden">90 days ago</span>
                 <span className="sm:hidden">30 days ago</span>
                 <span>Today</span>

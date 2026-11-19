@@ -1,1 +1,11 @@
+# Local Cloudflare runtime (`bun run dev`, `vite preview`). Docker and
+# `bun run start` read .env instead; see .env.example.
 UPTIMEROBOT_API_KEY=
+
+# Optional, same meaning as in the README's Configuration table.
+# SITE_TITLE=Status
+# SITE_DESCRIPTION=Live status and uptime.
+# SITE_LOGO=
+# SITE_URL=
+# ACCENT_COLOR=
+# DEMO=true

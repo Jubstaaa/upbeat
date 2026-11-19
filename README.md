@@ -68,7 +68,7 @@ Serving it from your own domain? Deploy with `CLOUDFLARE_ENV=production bun run 
 docker run -d -p 3000:3000 -e UPTIMEROBOT_API_KEY=ur123456-abcdef ghcr.io/jubstaaa/upbeat:1
 ```
 
-Images are published for `linux/amd64` and `linux/arm64`. Tags: `1`, `1.0`, `1.0.0`, `latest`.
+Images are published for `linux/amd64` and `linux/arm64`. Tags follow the release version (`1`, `1.0`, `1.0.3`, …) plus `latest`.
 
 ### Try it without a key
 
@@ -140,6 +140,8 @@ bun install
 echo 'DEMO=true' > .dev.vars
 bun run dev
 ```
+
+`bun run dev` runs the Worker locally and reads `.dev.vars` (see `.dev.vars.example`); `bun run start` and Docker read `.env` (see `.env.example`). Both accept the variables in the Configuration table.
 
 Checks: `bun run lint`, `bun run format:check`, `bun run type-check`, `bun run test`, and `bun run build && bun run test:e2e`. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
