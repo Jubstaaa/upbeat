@@ -1,10 +1,13 @@
-import { describe, expect, it } from 'vitest'
+import { readFileSync } from 'node:fs'
+
+import { describe, expect, it, vi } from 'vitest'
 
 import type { SiteConfig } from '@/lib/config/config.types'
 import { createDemoMonitors } from '@/lib/demo/demo'
 import type { StatusResult } from '@/lib/status/status.types'
 import { toStatusData } from '@/lib/status/status.utils'
 
+import { parseHeadersFile } from './headers-file'
 import { createApp } from './server'
 
 const NOW = 1_791_972_000
@@ -83,6 +86,15 @@ describe('GET /badge.svg', () => {
             await (await app(new Error('boom')).request('/badge.svg')).text()
         ).toContain('unknown')
     })
+
+    it('rejects a monitor id that cannot be a slug', async () => {
+        for (const monitor of ['<script>', 'a'.repeat(200), 'Public API']) {
+            const response = await app(ok).request(
+                `/badge.svg?monitor=${encodeURIComponent(monitor)}`
+            )
+            expect(response.status).toBe(400)
+        }
+    })
 })
 
 describe('GET /feed.xml', () => {
@@ -109,5 +121,55 @@ describe('GET /feed.xml', () => {
         const response = await app(new Error('boom')).request('/feed.xml')
         expect(response.status).toBe(200)
         expect(await response.text()).not.toContain('<entry>')
+    })
+})
+
+describe('errors', () => {
+    it('logs an unexpected status failure instead of hiding it', async () => {
+        const log = vi.spyOn(console, 'error').mockImplementation(() => {})
+        await app(new Error('boom')).request('/api/status')
+        expect(log).toHaveBeenCalledWith(expect.stringContaining('boom'))
+        log.mockRestore()
+    })
+})
+
+describe('security headers', () => {
+    const allPaths = parseHeadersFile(
+        readFileSync('public/_headers', 'utf8')
+    ).find(rule => rule.path === '/*')
+    const staticHeaders = new Map(
+        Object.entries(allPaths?.headers ?? {}).map(([name, value]) => [
+            name.toLowerCase(),
+            value,
+        ])
+    )
+
+    it('protects static assets with a CSP and the usual hardening headers', () => {
+        expect(staticHeaders.get('content-security-policy')).toContain(
+            "default-src 'self'"
+        )
+        expect(staticHeaders.get('x-content-type-options')).toBe('nosniff')
+        expect(staticHeaders.get('strict-transport-security')).toContain(
+            'max-age='
+        )
+        expect(staticHeaders.get('referrer-policy')).toBeDefined()
+        expect(staticHeaders.get('permissions-policy')).toBeDefined()
+    })
+
+    it('sends the same headers from every API route', async () => {
+        for (const route of ['/api/status', '/badge.svg', '/feed.xml']) {
+            const response = await app(ok).request(route)
+            for (const [name, value] of staticHeaders)
+                expect(response.headers.get(name), `${route} ${name}`).toBe(
+                    value
+                )
+        }
+    })
+
+    it('lets other sites embed the badge', async () => {
+        const response = await app(ok).request('/badge.svg')
+        expect(response.headers.get('cross-origin-resource-policy')).toBe(
+            'cross-origin'
+        )
     })
 })

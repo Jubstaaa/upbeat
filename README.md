@@ -121,6 +121,10 @@ upbeat is a React single-page app built with Vite, plus a small [Hono](https://h
 
 On Cloudflare the same code runs as one Worker with static assets; in Docker it runs on Bun, which serves both the API and the page.
 
+## Security headers
+
+Every response carries a Content Security Policy and the usual hardening headers (HSTS, `nosniff`, a strict referrer policy, a permissions policy). They live in [`public/_headers`](public/_headers), which Cloudflare applies to the static files; the Bun server and the Vercel build read the same file, and the API sets matching headers. Framing is allowed so the page can be embedded. Badges send `Cross-Origin-Resource-Policy: cross-origin` so other sites can show them.
+
 ## Known limits
 
 - Maintenance windows only exist on paid UptimeRobot plans, and upbeat shows one-time windows only; recurring windows are skipped because their times have no time zone in the API.

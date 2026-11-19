@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import type { UptimeRobotMonitor } from '@/lib/uptimerobot/uptimerobot.types'
+import type { UptimeRobotMonitor } from '@/lib/uptimerobot/uptimerobot.schema'
 
 import type { MonitorStatus } from './status.types'
 import {

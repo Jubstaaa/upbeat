@@ -3,7 +3,7 @@ import slugifyText from '@sindresorhus/slugify'
 import type {
     MonitorQuery,
     UptimeRobotMonitor,
-} from '@/lib/uptimerobot/uptimerobot.types'
+} from '@/lib/uptimerobot/uptimerobot.schema'
 
 import type {
     Incident,

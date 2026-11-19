@@ -1,10 +1,13 @@
-import { cp, rm, writeFile } from 'node:fs/promises'
+import { cp, readFile, rm, writeFile } from 'node:fs/promises'
+
+import { parseHeadersFile } from '../src/server/headers-file'
 
 const OUTPUT = '.vercel/output'
 const FUNCTION = `${OUTPUT}/functions/api.func`
 
 await rm(OUTPUT, { force: true, recursive: true })
 await cp('dist/client', `${OUTPUT}/static`, { recursive: true })
+await rm(`${OUTPUT}/static/_headers`)
 
 const result = await Bun.build({
     entrypoints: ['src/server/vercel.ts'],
@@ -26,10 +29,20 @@ await writeFile(
         shouldAddHelpers: false,
     })
 )
+// Vercel has no `_headers` support, so the same rules become header routes.
+const headerRoutes = parseHeadersFile(
+    await readFile('public/_headers', 'utf8')
+).map(({ headers, path }) => ({
+    continue: true,
+    headers,
+    src: `^${path.replaceAll('.', '\\.').replaceAll('*', '.*')}$`,
+}))
+
 await writeFile(
     `${OUTPUT}/config.json`,
     JSON.stringify({
         routes: [
+            ...headerRoutes,
             { dest: '/api', src: '^/(api/.*|badge\\.svg|feed\\.xml)$' },
             { handle: 'filesystem' },
             { dest: '/index.html', src: '/(.*)' },

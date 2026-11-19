@@ -62,6 +62,24 @@ test('serves the badge and the feed', async ({ request }) => {
     expect(await feed.text()).toContain('2 services were down')
 })
 
+test('sends security and cache headers with the page', async ({
+    page,
+    request,
+}) => {
+    const response = await request.get('/')
+    expect(response.headers()['content-security-policy']).toContain(
+        "default-src 'self'"
+    )
+    expect(response.headers()['x-content-type-options']).toBe('nosniff')
+    await page.goto('/')
+    const script = await page
+        .locator('script[type="module"]')
+        .first()
+        .getAttribute('src')
+    const asset = await request.get(script ?? '')
+    expect(asset.headers()['cache-control']).toContain('immutable')
+})
+
 test('skips the expand animation when motion is reduced', async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' })
     await page.goto('/', { waitUntil: 'networkidle' })

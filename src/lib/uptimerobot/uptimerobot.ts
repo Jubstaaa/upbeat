@@ -1,8 +1,9 @@
-import type {
-    MonitorQuery,
-    UptimeRobotMonitor,
-    UptimeRobotPage,
-} from './uptimerobot.types'
+import type { z } from 'zod'
+
+import { pageSchema } from './uptimerobot.schema'
+import type { MonitorQuery, UptimeRobotMonitor } from './uptimerobot.schema'
+
+type UptimeRobotPage = z.output<typeof pageSchema>
 
 const ENDPOINT = 'https://api.uptimerobot.com/v2/getMonitors'
 const PAGE_SIZE = 50
@@ -53,7 +54,12 @@ async function fetchPage(
     })
     if (!response.ok)
         throw new Error(`UptimeRobot responded with HTTP ${response.status}`)
-    const page = (await response.json()) as UptimeRobotPage
+    const parsed = pageSchema.safeParse(await response.json())
+    if (!parsed.success)
+        throw new Error('UptimeRobot returned an unexpected response', {
+            cause: parsed.error,
+        })
+    const page = parsed.data
     if (page.stat === 'ok' && page.monitors) return page
     if (page.error?.parameter_name === 'api_key')
         throw new UptimeRobotKeyError()

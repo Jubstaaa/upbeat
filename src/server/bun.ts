@@ -4,11 +4,23 @@ import { serveStatic } from 'hono/bun'
 import { getConfig } from '@/lib/config/config'
 import { getStatus } from '@/lib/status/status'
 
+import { matchesHeaderPath, parseHeadersFile } from './headers-file'
 import { createApp } from './server'
 
 const CLIENT_DIR = './dist/client'
 
+const headerRules = parseHeadersFile(
+    await Bun.file(`${CLIENT_DIR}/_headers`).text()
+)
+
 const app = new Hono()
+app.use(async (c, next) => {
+    await next()
+    for (const rule of headerRules)
+        if (matchesHeaderPath(rule.path, c.req.path))
+            for (const [name, value] of Object.entries(rule.headers))
+                c.header(name, value)
+})
 app.route('/', createApp({ getConfig, getStatus }))
 app.use('*', serveStatic({ root: CLIENT_DIR }))
 app.get('*', serveStatic({ path: `${CLIENT_DIR}/index.html` }))

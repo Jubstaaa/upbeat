@@ -1,5 +1,8 @@
 import { Hono } from 'hono'
 import { cache } from 'hono/cache'
+import { secureHeaders } from 'hono/secure-headers'
+import { validator } from 'hono/validator'
+import { z } from 'zod'
 
 import { getBadgeContent, renderBadge } from '@/lib/badge/badge'
 import { renderFeed } from '@/lib/feed/feed'
@@ -9,12 +12,61 @@ import type { ServerDeps, StatusResponse } from './server.types'
 
 const CACHE_CONTROL = 'public, max-age=60'
 const CACHED_ROUTES = ['/api/status', '/badge.svg', '/feed.xml']
+const MONITOR_ID_MAX = 100
+
+const badgeQuery = z.object({
+    monitor: z
+        .string()
+        .max(MONITOR_ID_MAX)
+        .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+        .optional(),
+})
+
+// Keep in step with public/_headers, which covers the static files; a test
+// compares the two.
+const SECURITY_HEADERS = secureHeaders({
+    contentSecurityPolicy: {
+        baseUri: ["'self'"],
+        connectSrc: ["'self'"],
+        defaultSrc: ["'self'"],
+        // Vite inlines the smallest font subsets as data: URLs.
+        fontSrc: ["'self'", 'data:'],
+        formAction: ["'self'"],
+        // SITE_LOGO may point at any https host.
+        imgSrc: ["'self'", 'data:', 'https:'],
+        objectSrc: ["'none'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'"],
+    },
+    // Badges are embedded as images on other sites.
+    crossOriginResourcePolicy: 'cross-origin',
+    permissionsPolicy: {
+        camera: [],
+        geolocation: [],
+        microphone: [],
+        payment: [],
+        usb: [],
+    },
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    // Template deployments may share a parent domain with plain-HTTP hosts.
+    strictTransportSecurity: 'max-age=31536000',
+    // A read-only status page has nothing to clickjack, and embedding it is
+    // a legitimate use.
+    xFrameOptions: false,
+})
 
 export function createApp({ getConfig, getStatus }: ServerDeps): Hono {
     const app = new Hono()
 
     const loadStatus = (): Promise<StatusResult> =>
-        getStatus().catch(() => ({ kind: 'error' }))
+        getStatus().catch((error: unknown) => {
+            console.error(
+                `upbeat: could not build the status (${error instanceof Error ? error.message : String(error)})`
+            )
+            return { kind: 'error' }
+        })
+
+    app.use(SECURITY_HEADERS)
 
     if (typeof caches !== 'undefined') {
         for (const route of CACHED_ROUTES) {
@@ -42,15 +94,25 @@ export function createApp({ getConfig, getStatus }: ServerDeps): Hono {
         })
     })
 
-    app.get('/badge.svg', async c => {
-        const svg = renderBadge(
-            getBadgeContent(await loadStatus(), c.req.query('monitor') ?? null)
-        )
-        return c.body(svg, 200, {
-            'Cache-Control': CACHE_CONTROL,
-            'Content-Type': 'image/svg+xml; charset=utf-8',
-        })
-    })
+    app.get(
+        '/badge.svg',
+        validator('query', (value, c) => {
+            const parsed = badgeQuery.safeParse(value)
+            return parsed.success
+                ? parsed.data
+                : c.text('Invalid monitor id', 400)
+        }),
+        async c => {
+            const { monitor } = c.req.valid('query')
+            const svg = renderBadge(
+                getBadgeContent(await loadStatus(), monitor ?? null)
+            )
+            return c.body(svg, 200, {
+                'Cache-Control': CACHE_CONTROL,
+                'Content-Type': 'image/svg+xml; charset=utf-8',
+            })
+        }
+    )
 
     app.get('/feed.xml', async c => {
         const config = getConfig()

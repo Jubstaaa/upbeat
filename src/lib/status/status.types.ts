@@ -1,7 +1,7 @@
 import type {
     MonitorQuery,
     UptimeRobotMonitor,
-} from '@/lib/uptimerobot/uptimerobot.types'
+} from '@/lib/uptimerobot/uptimerobot.schema'
 
 export type MonitorState = 'down' | 'paused' | 'pending' | 'up'
 

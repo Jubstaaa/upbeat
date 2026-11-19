@@ -3,7 +3,7 @@ import {
     getDayStarts,
     HISTORY_DAYS,
 } from '@/lib/status/status.utils'
-import type { UptimeRobotMonitor } from '@/lib/uptimerobot/uptimerobot.types'
+import type { UptimeRobotMonitor } from '@/lib/uptimerobot/uptimerobot.schema'
 
 import type { DemoMonitor } from './demo.types'
 
