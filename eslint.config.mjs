@@ -1,7 +1,8 @@
 import js from '@eslint/js'
 import { defineConfig, globalIgnores } from 'eslint/config'
 import eslintConfigPrettier from 'eslint-config-prettier'
-import importPlugin from 'eslint-plugin-import'
+import { createTypeScriptImportResolver } from 'eslint-import-resolver-typescript'
+import importPlugin from 'eslint-plugin-import-x'
 import perfectionistPlugin from 'eslint-plugin-perfectionist'
 import prettierPlugin from 'eslint-plugin-prettier'
 import reactPlugin from 'eslint-plugin-react'
@@ -42,10 +43,10 @@ const eslintConfig = defineConfig([
             },
         },
         plugins: {
-            import: importPlugin,
-            perfectionist: perfectionistPlugin,
-            prettier: prettierPlugin,
-            react: reactPlugin,
+            'import-x': importPlugin,
+            'perfectionist': perfectionistPlugin,
+            'prettier': prettierPlugin,
+            'react': reactPlugin,
         },
         rules: {
             ...eslintConfigPrettier.rules,
@@ -57,7 +58,7 @@ const eslintConfig = defineConfig([
             '@typescript-eslint/no-explicit-any': 'error',
             '@typescript-eslint/no-unused-expressions': 'off',
             '@typescript-eslint/no-unused-vars': 'off',
-            'import/order': [
+            'import-x/order': [
                 'error',
                 {
                     'alphabetize': { caseInsensitive: true, order: 'asc' },
@@ -137,9 +138,7 @@ const eslintConfig = defineConfig([
             'react/no-unstable-nested-components': 'off',
         },
         settings: {
-            'import/resolver': {
-                typescript: true,
-            },
+            'import-x/resolver-next': [createTypeScriptImportResolver()],
         },
     },
     {
