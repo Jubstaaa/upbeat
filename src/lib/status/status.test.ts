@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import { UptimeRobotKeyError } from '@/lib/uptimerobot/uptimerobot'
-import type { UptimeRobotMonitor } from '@/lib/uptimerobot/uptimerobot.types'
+import type { UptimeRobotMonitor } from '@/lib/uptimerobot/uptimerobot.schema'
 
 import { createStatusSource } from './status'
 

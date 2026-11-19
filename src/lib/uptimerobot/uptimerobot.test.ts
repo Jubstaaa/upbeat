@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { fetchMonitors, UptimeRobotKeyError } from './uptimerobot'
-import type { MonitorQuery, UptimeRobotMonitor } from './uptimerobot.types'
+import type { MonitorQuery, UptimeRobotMonitor } from './uptimerobot.schema'
 
 const KEY = 'ur123-secret'
 const QUERY: MonitorQuery = {
@@ -138,5 +138,18 @@ describe('fetchMonitors', () => {
     it('fails on an HTTP error', async () => {
         fetchMock.mockResolvedValueOnce(new Response('busy', { status: 429 }))
         await expect(fetchMonitors(KEY, QUERY)).rejects.toThrow('HTTP 429')
+    })
+
+    it('rejects a response that does not match the API shape', async () => {
+        fetchMock.mockResolvedValueOnce(
+            respond({
+                monitors: [{ friendly_name: 'No uptime ranges', id: 1 }],
+                pagination: { limit: 50, offset: 0, total: 1 },
+                stat: 'ok',
+            })
+        )
+        await expect(fetchMonitors(KEY, QUERY)).rejects.toThrow(
+            'UptimeRobot returned an unexpected response'
+        )
     })
 })
