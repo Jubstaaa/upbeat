@@ -68,7 +68,7 @@ Serving it from your own domain? Deploy with `CLOUDFLARE_ENV=production bun run 
 docker run -d -p 3000:3000 -e UPTIMEROBOT_API_KEY=ur123456-abcdef ghcr.io/jubstaaa/upbeat:1
 ```
 
-Images are published for `linux/amd64` and `linux/arm64`. Tags follow the release version (`1`, `1.0`, `1.0.3`, …) plus `latest`.
+Images are published for `linux/amd64` and `linux/arm64`. Tags follow the release version (`1`, `1.0`, `1.0.4`, …) plus `latest`.
 
 ### Try it without a key
 

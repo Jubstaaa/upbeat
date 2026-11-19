@@ -2,6 +2,24 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.4] - 2026-11-20
+
+### Security
+
+- Pages and API responses carry a Content Security Policy and hardening headers; badges stay embeddable.
+- The UptimeRobot response is validated before use, and a malformed `?monitor=` on `/badge.svg` gets a 400.
+- The Cloudflare Web Analytics beacon is allowed by the CSP, so it no longer logs a console error.
+
+### Fixed
+
+- Secondary text meets WCAG AA contrast in light and dark mode, and footer links are underlined.
+- Monitor groups no longer shift down once their rows render.
+- Unexpected status failures are logged instead of swallowed.
+
+### Changed
+
+- The status request starts alongside the script bundle instead of after it, and hashed assets are cached as immutable.
+
 ## [1.0.3] - 2026-10-17
 
 ### Fixed
