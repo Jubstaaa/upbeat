@@ -1,5 +1,5 @@
-import { getConfig } from '@/lib/config/config'
-import { getStatus } from '@/lib/status/status'
+import { getConfig } from '@/server/config/config'
+import { getStatus } from '@/server/status/status'
 
 import { createApp } from './server'
 

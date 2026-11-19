@@ -4,11 +4,15 @@ import { secureHeaders } from 'hono/secure-headers'
 import { validator } from 'hono/validator'
 import { z } from 'zod'
 
-import { getBadgeContent, renderBadge } from '@/lib/badge/badge'
-import { renderFeed } from '@/lib/feed/feed'
-import type { StatusResult } from '@/lib/status/status.types'
+import { getBadgeContent, renderBadge } from '@/server/badge/badge'
+import type { SiteConfig } from '@/server/config/config.types'
+import { renderFeed } from '@/server/feed/feed'
+import type { StatusResponse, StatusResult } from '@/status/status.types'
 
-import type { ServerDeps, StatusResponse } from './server.types'
+interface ServerDeps {
+    getConfig: () => SiteConfig
+    getStatus: () => Promise<StatusResult>
+}
 
 const CACHE_CONTROL = 'public, max-age=60'
 const CACHED_ROUTES = ['/api/status', '/badge.svg', '/feed.xml']

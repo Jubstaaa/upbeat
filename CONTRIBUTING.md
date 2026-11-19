@@ -62,11 +62,13 @@ phone width, and include screenshots in the pull request.
 
 - Prettier and ESLint are the source of truth; `bun run format` and
   `bunx eslint --fix .` fix most issues
-- Kebab-case file names. Every component and every `lib` module has its own
-  folder with flat files inside: `monitor-row/monitor-row.tsx`,
-  `monitor-row.types.ts`, and sub-components such as `monitor-row-details.tsx`
-- Anything that talks to UptimeRobot lives in `src/lib/uptimerobot/`; the UI,
-  badge and feed only see `StatusData`
+- Kebab-case file names. Code lives next to the only place that uses it: a
+  single-file part is a file (`site-header.tsx`), a multi-file part gets a
+  folder (`monitor-row/monitor-row.tsx`, `monitor-row-details.tsx`). A props
+  interface lives in its component; a `*.types.ts` file exists only when
+  several files share it. No barrel `index.ts` files
+- Anything that talks to UptimeRobot lives in `src/server/uptimerobot/`; the UI,
+  badge and feed only see `StatusData` from `src/status/`
 - No comments in source unless the logic is genuinely non-obvious
 - Add a test for every behaviour change. When you add a test for existing
   behaviour, break the code once to confirm the test fails, then restore it
@@ -75,13 +77,16 @@ phone width, and include screenshots in the pull request.
 
 ```
 src/
-├── main.tsx        # Client entry
-├── server/         # Hono API (/api/status, /badge.svg, /feed.xml), Cloudflare and Bun entries
-├── styles/         # Tailwind theme
-├── components/     # One folder per component: status-page, summary-card, monitor-row, …
-│   └── ui/         # shadcn/ui primitives (tooltip, collapsible, button, badge)
-├── lib/            # One folder per module: config, uptimerobot, status, demo, badge, feed, …
-└── providers/      # React Query, Motion and tooltip providers
+├── main.tsx            # Client entry
+├── features/
+│   └── status-page/    # The page and every part only it uses (summary card, monitor rows, uptime bars, …)
+├── status/             # Status model, formatting and overall state, shared by the page and the API
+├── server/             # Hono API (/api/status, /badge.svg, /feed.xml); Cloudflare, Bun and Vercel entries
+│   └── …               # Server-only modules: config, uptimerobot, status cache, demo data, badge, feed
+├── components/ui/      # shadcn/ui primitives
+├── lib/utils.ts        # shadcn's cn()
+├── providers/          # React Query, Motion and tooltip providers
+└── styles/             # Tailwind theme
 e2e/                # Playwright smoke test (runs against DEMO=true)
 ```
 

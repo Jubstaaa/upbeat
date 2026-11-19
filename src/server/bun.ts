@@ -1,8 +1,8 @@
 import { Hono } from 'hono'
 import { serveStatic } from 'hono/bun'
 
-import { getConfig } from '@/lib/config/config'
-import { getStatus } from '@/lib/status/status'
+import { getConfig } from '@/server/config/config'
+import { getStatus } from '@/server/status/status'
 
 import { matchesHeaderPath, parseHeadersFile } from './headers-file'
 import { createApp } from './server'
