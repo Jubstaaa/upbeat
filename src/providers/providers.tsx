@@ -1,11 +1,14 @@
 import { useState } from 'react'
+import type { ReactNode } from 'react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { LazyMotion, MotionConfig, useReducedMotion } from 'motion/react'
 
 import { TooltipProvider } from '@/components/ui/tooltip'
 
-import type { ProvidersProps } from './providers.types'
+interface ProvidersProps {
+    children: ReactNode
+}
 
 const EASE = { duration: 0.25, ease: [0.2, 0.8, 0.2, 1] } as const
 const INSTANT = { duration: 0 }

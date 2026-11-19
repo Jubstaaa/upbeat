@@ -57,7 +57,7 @@ const eslintConfig = defineConfig([
             '@typescript-eslint/no-empty-object-type': 'off',
             '@typescript-eslint/no-explicit-any': 'error',
             '@typescript-eslint/no-unused-expressions': 'off',
-            '@typescript-eslint/no-unused-vars': 'off',
+            '@typescript-eslint/no-unused-vars': 'error',
             'import-x/order': [
                 'error',
                 {
@@ -92,7 +92,6 @@ const eslintConfig = defineConfig([
                 },
             ],
             'no-console': ['warn', { allow: ['error'] }],
-            'no-unused-vars': 'error',
             'perfectionist/sort-interfaces': ['error', memberGroups],
             'perfectionist/sort-named-imports': [
                 'warn',
@@ -145,12 +144,6 @@ const eslintConfig = defineConfig([
         files: ['src/components/ui/**'],
         rules: {
             'react-refresh/only-export-components': 'off',
-        },
-    },
-    {
-        files: ['**/*.types.ts', '**/*.d.ts'],
-        rules: {
-            'no-unused-vars': 'off',
         },
     },
 ])

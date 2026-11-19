@@ -2,10 +2,10 @@ import { readFileSync } from 'node:fs'
 
 import { describe, expect, it, vi } from 'vitest'
 
-import type { SiteConfig } from '@/lib/config/config.types'
-import { createDemoMonitors } from '@/lib/demo/demo'
-import type { StatusResult } from '@/lib/status/status.types'
-import { toStatusData } from '@/lib/status/status.utils'
+import type { SiteConfig } from '@/server/config/config.types'
+import { createDemoMonitors } from '@/server/demo/demo'
+import { toStatusData } from '@/server/status/status.utils'
+import type { StatusResult } from '@/status/status.types'
 
 import { parseHeadersFile } from './headers-file'
 import { createApp } from './server'
