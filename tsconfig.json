@@ -1,5 +1,5 @@
 {
-    "extends": "@jubstaaa/config/tsconfig/node",
+    "extends": "@jubstaa/config/tsconfig/node",
     "compilerOptions": {
         "lib": ["dom", "dom.iterable", "esnext"],
         "types": ["vite/client", "bun"],
@@ -9,6 +9,14 @@
             "@/*": ["./src/*"]
         }
     },
-    "include": ["src", "e2e", "scripts", "*.ts", "*.mts"],
+    "include": [
+        "prettier.config.ts",
+        "eslint.config.ts",
+        "src",
+        "e2e",
+        "scripts",
+        "*.ts",
+        "*.mts"
+    ],
     "exclude": ["node_modules", "dist"]
 }
