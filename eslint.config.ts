@@ -1,4 +1,4 @@
-import { react } from '@jubstaaa/config/eslint/react'
+import { react } from '@jubstaa/config/eslint/react'
 import { defineConfig } from 'eslint/config'
 
 export default defineConfig([
