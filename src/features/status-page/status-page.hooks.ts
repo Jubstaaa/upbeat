@@ -4,19 +4,6 @@ import { parseHash } from './status-page.utils'
 
 type HashSetter = (value: string) => void
 
-function subscribe(onChange: () => void): () => void {
-    window.addEventListener('hashchange', onChange)
-    return () => window.removeEventListener('hashchange', onChange)
-}
-
-function getSnapshot(): string {
-    return parseHash(window.location.hash)
-}
-
-function getServerSnapshot(): string {
-    return ''
-}
-
 export function useLocationHash(): [string, HashSetter] {
     const hash = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
@@ -31,4 +18,19 @@ export function useLocationHash(): [string, HashSetter] {
     }, [])
 
     return [hash, setHash]
+}
+
+function getServerSnapshot(): string {
+    return ''
+}
+
+function getSnapshot(): string {
+    return parseHash(window.location.hash)
+}
+
+function subscribe(onChange: () => void): () => void {
+    window.addEventListener('hashchange', onChange)
+    return () => {
+        window.removeEventListener('hashchange', onChange)
+    }
 }

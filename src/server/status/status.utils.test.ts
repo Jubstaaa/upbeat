@@ -19,11 +19,8 @@ const TODAY = 1_791_936_000
 const NOW = TODAY + 10 * 3_600
 const FIRST_DAY = TODAY - (HISTORY_DAYS - 1) * DAY_SECONDS
 
-function ranges(
-    days: string[] = Array(HISTORY_DAYS).fill('100.000'),
-    total = '100.000'
-): string {
-    return [...days, total].join('-')
+function allMonitors(monitors: UptimeRobotMonitor[]): MonitorStatus[] {
+    return toStatusData(monitors, NOW).groups.flatMap(group => group.monitors)
 }
 
 function makeMonitor(
@@ -43,6 +40,13 @@ function makeMonitor(
     }
 }
 
+function ranges(
+    days: string[] = Array(HISTORY_DAYS).fill('100.000'),
+    total = '100.000'
+): string {
+    return [...days, total].join('-')
+}
+
 function status(state: MonitorStatus['state']): MonitorStatus {
     return {
         averageResponseTime: null,
@@ -54,10 +58,6 @@ function status(state: MonitorStatus['state']): MonitorStatus {
         state,
         uptime: 100,
     }
-}
-
-function allMonitors(monitors: UptimeRobotMonitor[]): MonitorStatus[] {
-    return toStatusData(monitors, NOW).groups.flatMap(group => group.monitors)
 }
 
 describe('days', () => {
@@ -125,7 +125,7 @@ describe('toStatusData', () => {
             code =>
                 allMonitors([
                     makeMonitor({ friendly_name: `m${code}`, status: code }),
-                ])[0].state
+                ])[0]!.state
         )
         expect(states).toEqual([
             'paused',
@@ -143,19 +143,19 @@ describe('toStatusData', () => {
                 create_datetime: FIRST_DAY + 10 * DAY_SECONDS + 3_600,
             }),
         ])
-        expect(monitor.days.slice(0, 10)).toEqual(Array(10).fill(null))
-        expect(monitor.days[10]).toBe(100)
-        expect(monitor.uptime).toBe(100)
+        expect(monitor!.days.slice(0, 10)).toEqual(Array(10).fill(null))
+        expect(monitor!.days[10]).toBe(100)
+        expect(monitor!.uptime).toBe(100)
     })
 
     it('treats malformed uptime ranges as no data', () => {
         const [monitor] = allMonitors([
             makeMonitor({ custom_uptime_ranges: '100.000-99' }),
         ])
-        expect(monitor.days.every(day => day === null)).toBe(true)
-        expect(monitor.uptime).toBeNull()
+        expect(monitor!.days.every(day => day === null)).toBe(true)
+        expect(monitor!.uptime).toBeNull()
         const [empty] = allMonitors([makeMonitor({ custom_uptime_ranges: '' })])
-        expect(empty.uptime).toBeNull()
+        expect(empty!.uptime).toBeNull()
     })
 
     it('rounds the average response time and sorts response times', () => {
@@ -167,13 +167,13 @@ describe('toStatusData', () => {
                 ],
             }),
         ])
-        expect(monitor.averageResponseTime).toBe(200)
-        expect(monitor.responseTimes).toEqual([
+        expect(monitor!.averageResponseTime).toBe(200)
+        expect(monitor!.responseTimes).toEqual([
             { at: NOW - 600, ms: 90 },
             { at: NOW - 60, ms: 120 },
         ])
         expect(
-            allMonitors([makeMonitor({ average_response_time: '0' })])[0]
+            allMonitors([makeMonitor({ average_response_time: '0' })])[0]!
                 .averageResponseTime
         ).toBeNull()
     })
@@ -219,7 +219,7 @@ describe('toStatusData', () => {
                 status: 9,
             }),
         ])
-        expect(monitor.outages).toEqual([
+        expect(monitor!.outages).toEqual([
             { end: null, start: NOW - 300 },
             { end: NOW - 6_600, start: NOW - 7_200 },
         ])
@@ -231,7 +231,9 @@ describe('toStatusData', () => {
             duration: 60,
             type: 1,
         }))
-        expect(allMonitors([makeMonitor({ logs })])[0].outages).toHaveLength(10)
+        expect(allMonitors([makeMonitor({ logs })])[0]!.outages).toHaveLength(
+            10
+        )
     })
 
     it('keeps only one-time maintenance windows that have not ended', () => {
@@ -307,7 +309,7 @@ describe('mergeIncidents', () => {
                 { end: null, monitor: 'A', start: 100 },
                 { end: null, monitor: 'B', start: 130 },
                 { end: 5_000, monitor: 'C', start: 4_000 },
-            ])[0].ongoing
+            ])[0]!.ongoing
         ).toEqual(['A', 'B'])
     })
 
@@ -319,7 +321,7 @@ describe('mergeIncidents', () => {
         }))
         const incidents = mergeIncidents(entries)
         expect(incidents).toHaveLength(10)
-        expect(incidents[0].start).toBe(110_000)
+        expect(incidents[0]!.start).toBe(110_000)
     })
 })
 

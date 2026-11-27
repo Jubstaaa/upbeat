@@ -1,5 +1,8 @@
-import { useCallback, useRef, useState } from 'react'
 import type { PointerEvent } from 'react'
+
+import { useCallback, useRef, useState } from 'react'
+
+import type { DayTone } from '@/status/status.types'
 
 import { Popover, PopoverAnchor, PopoverContent } from '@/components/ui/popover'
 import {
@@ -9,10 +12,10 @@ import {
 } from '@/components/ui/tooltip'
 import { cn } from '@/lib/utils'
 import { dayTone } from '@/status/format'
-import type { DayTone } from '@/status/status.types'
+
+import type { ActiveBar, UptimeBarsProps } from './uptime-bars.types'
 
 import UptimeBarsDay from './uptime-bars-day'
-import type { ActiveBar, UptimeBarsProps } from './uptime-bars.types'
 import { toActiveBar } from './uptime-bars.utils'
 
 const MOBILE_DAYS = 30
@@ -53,10 +56,9 @@ export default function UptimeBars({ days, dayStarts, name }: UptimeBarsProps) {
             event.preventDefault()
     }, [])
 
-    const handleOpenAutoFocus = useCallback(
-        (event: Event) => event.preventDefault(),
-        []
-    )
+    const handleOpenAutoFocus = useCallback((event: Event) => {
+        event.preventDefault()
+    }, [])
 
     const anchor = active && (
         <span
@@ -65,45 +67,46 @@ export default function UptimeBars({ days, dayStarts, name }: UptimeBarsProps) {
             style={{ left: active.left, width: active.width }}
         />
     )
-    const day = active && (
+    const activeDayStart = active ? dayStarts[active.index] : undefined
+    const day = active && activeDayStart !== undefined && (
         <UptimeBarsDay
-            dayStart={dayStarts[active.index]}
-            value={days[active.index]}
+            dayStart={activeDayStart}
+            value={days[active.index] ?? null}
         />
     )
 
     return (
         <div>
             <div
-                ref={barsRef}
                 aria-label={`${name}, daily uptime for the last 90 days`}
                 className="relative grid h-7.5 animate-reveal grid-cols-[repeat(90,minmax(0,1fr))] gap-0.5 max-sm:grid-cols-[repeat(30,minmax(0,1fr))] max-sm:gap-1"
-                role="img"
                 onPointerDown={handlePress}
                 onPointerLeave={handleLeave}
-                onPointerMove={handleHover}>
+                onPointerMove={handleHover}
+                ref={barsRef}
+                role="img">
                 {days.map((value, index) => (
                     <span
-                        key={index}
-                        data-index={index}
                         className={cn(
                             'rounded-xs transition-opacity hover:opacity-60',
                             TONES[dayTone(value)],
                             index < days.length - MOBILE_DAYS && 'max-sm:hidden'
                         )}
+                        data-index={index}
+                        key={index}
                     />
                 ))}
                 {active?.isTouch && (
                     <Popover
                         key={active.index}
-                        open
-                        onOpenChange={handleOpenChange}>
+                        onOpenChange={handleOpenChange}
+                        open>
                         <PopoverAnchor asChild>{anchor}</PopoverAnchor>
                         <PopoverContent
                             className="w-fit border-0 bg-foreground px-3 py-1.5 text-xs text-background"
-                            side="top"
                             onOpenAutoFocus={handleOpenAutoFocus}
-                            onPointerDownOutside={handlePointerDownOutside}>
+                            onPointerDownOutside={handlePointerDownOutside}
+                            side="top">
                             {day}
                         </PopoverContent>
                     </Popover>

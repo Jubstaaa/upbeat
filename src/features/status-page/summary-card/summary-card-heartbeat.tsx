@@ -1,6 +1,7 @@
+import type { OverallState } from '@/status/status.types'
+
 import { cn } from '@/lib/utils'
 import { isAlertState } from '@/status/overall'
-import type { OverallState } from '@/status/status.types'
 
 import type { SummaryCardHeartbeatProps } from './summary-card.types'
 
@@ -24,21 +25,21 @@ export default function SummaryCardHeartbeat({
             preserveAspectRatio="xMaxYMid slice"
             viewBox="0 0 300 60">
             <path
-                d={PATH}
-                vectorEffect="non-scaling-stroke"
                 className={cn(
                     'fill-none stroke-[1.5] opacity-15',
                     STROKES[state]
                 )}
-            />
-            <path
                 d={PATH}
                 vectorEffect="non-scaling-stroke"
+            />
+            <path
                 className={cn(
                     'animate-ekg fill-none stroke-2 [stroke-dasharray:90_510] [stroke-linecap:round] [stroke-linejoin:round]',
                     STROKES[state],
                     isAlertState(state) && '[animation-duration:1.2s]'
                 )}
+                d={PATH}
+                vectorEffect="non-scaling-stroke"
             />
         </svg>
     )

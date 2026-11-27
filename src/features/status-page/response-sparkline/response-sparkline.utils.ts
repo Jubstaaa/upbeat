@@ -10,11 +10,11 @@ export function buildSparkline(
     width: number,
     height: number
 ): string {
-    if (points.length < 2) return ''
+    const first = points[0]
+    const last = points[points.length - 1]
+    if (points.length < 2 || !first || !last) return ''
     const values = points.map(point => point.ms)
-    const x = scaleLinear()
-        .domain([points[0].at, points[points.length - 1].at])
-        .range([0, width])
+    const x = scaleLinear().domain([first.at, last.at]).range([0, width])
     const y = scaleLinear()
         .domain([Math.min(...values), Math.max(...values)])
         .range([height - INSET, INSET])

@@ -34,11 +34,11 @@ describe('demo data', () => {
         expect(
             data.incidents.some(incident => incident.monitors.length === 2)
         ).toBe(true)
-        expect(data.groups[1].monitors[0].responseTimes).toHaveLength(288)
+        expect(data.groups[1]!.monitors[0]!.responseTimes).toHaveLength(288)
     })
 
     it('shows the blog as created 40 days ago', () => {
-        const blog = data.groups[2].monitors[0]
+        const blog = data.groups[2]!.monitors[0]!
         expect(blog.days.filter(day => day === null)).toHaveLength(49)
     })
 

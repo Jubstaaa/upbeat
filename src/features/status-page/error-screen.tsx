@@ -17,8 +17,8 @@ export default function ErrorScreen({ isRetrying, onRetry }: ErrorScreenProps) {
             <Button
                 className="mt-6"
                 disabled={isRetrying}
-                variant="outline"
-                onClick={onRetry}>
+                onClick={onRetry}
+                variant="outline">
                 {isRetrying ? 'Trying…' : 'Try again'}
             </Button>
         </main>

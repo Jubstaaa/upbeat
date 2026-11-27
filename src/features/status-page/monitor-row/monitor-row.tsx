@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useRef } from 'react'
-
 import { ChevronDown } from 'lucide-react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import { Badge } from '@/components/ui/badge'
 import {
@@ -13,9 +12,10 @@ import UptimeBars from '@/features/status-page/uptime-bars/uptime-bars'
 import { cn } from '@/lib/utils'
 import { formatPercent } from '@/status/format'
 
+import type { MonitorRowProps } from './monitor-row.types'
+
 import MonitorRowDetails from './monitor-row-details'
 import MonitorRowPulse from './monitor-row-pulse'
-import type { MonitorRowProps } from './monitor-row.types'
 
 export default function MonitorRow({
     dayStarts,
@@ -25,10 +25,9 @@ export default function MonitorRow({
 }: MonitorRowProps) {
     const rowRef = useRef<HTMLLIElement>(null)
 
-    const handleToggle = useCallback(
-        () => onToggle(monitor.id),
-        [monitor.id, onToggle]
-    )
+    const handleToggle = useCallback(() => {
+        onToggle(monitor.id)
+    }, [monitor.id, onToggle])
 
     useEffect(() => {
         if (isOpen)
@@ -39,11 +38,11 @@ export default function MonitorRow({
     }, [isOpen])
 
     return (
-        <Collapsible asChild open={isOpen} onOpenChange={handleToggle}>
+        <Collapsible asChild onOpenChange={handleToggle} open={isOpen}>
             <li
-                ref={rowRef}
                 className="scroll-mt-4 px-5.5 py-4.5 not-first:border-t not-first:border-border max-sm:p-4"
-                id={monitor.id}>
+                id={monitor.id}
+                ref={rowRef}>
                 <CollapsibleTrigger className="mb-3 flex w-full items-center gap-2.5 text-left">
                     <MonitorRowPulse state={monitor.state} />
                     <span className="min-w-0 flex-1 truncate font-medium">

@@ -1,9 +1,9 @@
 export interface SiteConfig {
-    accentColor: string | null
-    apiKey: string | null
+    accentColor: null | string
+    apiKey: null | string
     demo: boolean
     description: string
-    logo: string | null
+    logo: null | string
     title: string
-    url: string | null
+    url: null | string
 }

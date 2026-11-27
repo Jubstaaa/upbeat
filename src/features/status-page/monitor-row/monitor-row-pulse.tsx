@@ -1,5 +1,6 @@
-import { cn } from '@/lib/utils'
 import type { MonitorState } from '@/status/status.types'
+
+import { cn } from '@/lib/utils'
 
 import type { MonitorRowPulseProps } from './monitor-row.types'
 
@@ -22,23 +23,23 @@ export default function MonitorRowPulse({ state }: MonitorRowPulseProps) {
     return (
         <svg
             aria-hidden
-            viewBox="0 0 28 12"
             className={cn(
                 'h-3 w-7 flex-none',
                 state === 'down' && 'animate-blink'
-            )}>
+            )}
+            viewBox="0 0 28 12">
             <path
                 className={cn(LINE, STROKES[state], isUp && 'opacity-25')}
                 d={isUp ? BEAT : FLAT}
             />
             {isUp && (
                 <path
-                    d={BEAT}
                     className={cn(
                         LINE,
                         'animate-trace [stroke-dasharray:14_30]',
                         STROKES[state]
                     )}
+                    d={BEAT}
                 />
             )}
         </svg>

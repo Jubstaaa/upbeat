@@ -1,10 +1,10 @@
-import { useId, useMemo } from 'react'
-
 import { useReducedMotion } from 'motion/react'
 import * as m from 'motion/react-m'
+import { useId, useMemo } from 'react'
+
+import type { ResponseTime } from '@/status/status.types'
 
 import { cn } from '@/lib/utils'
-import type { ResponseTime } from '@/status/status.types'
 
 import { buildSparkline } from './response-sparkline.utils'
 
@@ -41,12 +41,12 @@ export default function ResponseSparkline({
     return (
         <svg
             aria-hidden
-            preserveAspectRatio="none"
-            viewBox={`0 0 ${width} ${height}`}
             className={cn(
                 size === 'small' ? 'h-6 w-24' : 'h-30 w-full',
                 className
-            )}>
+            )}
+            preserveAspectRatio="none"
+            viewBox={`0 0 ${width} ${height}`}>
             {size === 'large' && (
                 <>
                     <defs>
@@ -79,7 +79,7 @@ export default function ResponseSparkline({
                 className="fill-none stroke-current stroke-[1.5]"
                 d={path}
                 initial={{ pathLength: 0 }}
-                transition={shouldReduceMotion ? undefined : DRAW}
+                {...(shouldReduceMotion ? {} : { transition: DRAW })}
                 vectorEffect="non-scaling-stroke"
             />
         </svg>

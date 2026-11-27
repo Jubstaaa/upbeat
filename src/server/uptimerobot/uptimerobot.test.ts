@@ -1,7 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { fetchMonitors, UptimeRobotKeyError } from './uptimerobot'
 import type { MonitorQuery, UptimeRobotMonitor } from './uptimerobot.schema'
+
+import { fetchMonitors, UptimeRobotKeyError } from './uptimerobot'
+
+function asQuery(body: BodyInit | null | undefined): string {
+    if (typeof body === 'string') return body
+    if (body instanceof URLSearchParams) return body.toString()
+
+    return ''
+}
 
 const KEY = 'ur123-secret'
 const QUERY: MonitorQuery = {
@@ -49,9 +57,9 @@ describe('fetchMonitors', () => {
             })
         )
         await expect(fetchMonitors(KEY, QUERY)).resolves.toEqual([monitor(1)])
-        const [url, init] = fetchMock.mock.calls[0]
+        const [url, init] = fetchMock.mock.calls[0]!
         expect(url).toBe('https://api.uptimerobot.com/v2/getMonitors')
-        const body = new URLSearchParams(String(init?.body))
+        const body = new URLSearchParams(asQuery(init?.body))
         expect(Object.fromEntries(body)).toMatchObject({
             api_key: KEY,
             custom_uptime_ranges: '100_150-150_200',
@@ -90,9 +98,9 @@ describe('fetchMonitors', () => {
             monitor(2),
         ])
         expect(
-            new URLSearchParams(String(fetchMock.mock.calls[1][1]?.body)).get(
-                'offset'
-            )
+            new URLSearchParams(
+                asQuery(fetchMock.mock.calls[1]?.[1]?.body)
+            ).get('offset')
         ).toBe('50')
     })
 

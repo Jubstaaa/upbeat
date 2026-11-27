@@ -47,11 +47,11 @@ export const pageSchema = z.object({
     stat: z.enum(['fail', 'ok']),
 })
 
-export type UptimeRobotMonitor = z.input<typeof monitorSchema>
-
 export interface MonitorQuery {
     logsStart: number
     now: number
     ranges: string
     responseTimesStart: number
 }
+
+export type UptimeRobotMonitor = z.input<typeof monitorSchema>

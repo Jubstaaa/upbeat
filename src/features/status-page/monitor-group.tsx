@@ -1,18 +1,19 @@
-import MonitorRow from '@/features/status-page/monitor-row/monitor-row'
 import type { MonitorGroup } from '@/status/status.types'
+
+import MonitorRow from '@/features/status-page/monitor-row/monitor-row'
 
 interface MonitorGroupProps {
     dayStarts: number[]
     group: MonitorGroup
-    openId: string
     onToggle: (id: string) => void
+    openId: string
 }
 
 export default function MonitorGroup({
     dayStarts,
     group,
-    openId,
     onToggle,
+    openId,
 }: MonitorGroupProps) {
     return (
         <section className="mb-12">
@@ -22,9 +23,9 @@ export default function MonitorGroup({
             <ul className="rounded-xl border border-border bg-card shadow-xs">
                 {group.monitors.map(monitor => (
                     <MonitorRow
-                        key={monitor.id}
                         dayStarts={dayStarts}
                         isOpen={openId === monitor.id}
+                        key={monitor.id}
                         monitor={monitor}
                         onToggle={onToggle}
                     />

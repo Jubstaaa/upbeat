@@ -4,10 +4,11 @@ import { secureHeaders } from 'hono/secure-headers'
 import { validator } from 'hono/validator'
 import { z } from 'zod'
 
-import { getBadgeContent, renderBadge } from '@/server/badge/badge'
 import type { SiteConfig } from '@/server/config/config.types'
-import { renderFeed } from '@/server/feed/feed'
 import type { StatusResponse, StatusResult } from '@/status/status.types'
+
+import { getBadgeContent, renderBadge } from '@/server/badge/badge'
+import { renderFeed } from '@/server/feed/feed'
 
 interface ServerDeps {
     getConfig: () => SiteConfig
@@ -26,24 +27,22 @@ const badgeQuery = z.object({
         .optional(),
 })
 
-// Keep in step with public/_headers, which covers the static files; a test
-// compares the two.
 const SECURITY_HEADERS = secureHeaders({
     contentSecurityPolicy: {
         baseUri: ["'self'"],
-        // Cloudflare injects its Web Analytics beacon when the zone has it on.
+
         connectSrc: ["'self'", 'https://cloudflareinsights.com'],
         defaultSrc: ["'self'"],
-        // Vite inlines the smallest font subsets as data: URLs.
+
         fontSrc: ["'self'", 'data:'],
         formAction: ["'self'"],
-        // SITE_LOGO may point at any https host.
+
         imgSrc: ["'self'", 'data:', 'https:'],
         objectSrc: ["'none'"],
         scriptSrc: ["'self'", 'https://static.cloudflareinsights.com'],
         styleSrc: ["'self'"],
     },
-    // Badges are embedded as images on other sites.
+
     crossOriginResourcePolicy: 'cross-origin',
     permissionsPolicy: {
         camera: [],
@@ -53,10 +52,9 @@ const SECURITY_HEADERS = secureHeaders({
         usb: [],
     },
     referrerPolicy: 'strict-origin-when-cross-origin',
-    // Template deployments may share a parent domain with plain-HTTP hosts.
+
     strictTransportSecurity: 'max-age=31536000',
-    // A read-only status page has nothing to clickjack, and embedding it is
-    // a legitimate use.
+
     xFrameOptions: false,
 })
 

@@ -1,7 +1,5 @@
 import { StrictMode } from 'react'
-
 import { createRoot } from 'react-dom/client'
-
 import '@fontsource-variable/inter'
 import '@fontsource-variable/jetbrains-mono'
 
@@ -10,7 +8,10 @@ import Providers from '@/providers/providers'
 
 import './styles/globals.css'
 
-createRoot(document.getElementById('root') as HTMLElement).render(
+const root = document.getElementById('root')
+if (!root) throw new Error('No #root element')
+
+createRoot(root).render(
     <StrictMode>
         <Providers>
             <StatusPage />

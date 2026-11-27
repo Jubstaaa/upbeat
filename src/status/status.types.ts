@@ -1,21 +1,7 @@
-export type MonitorState = 'down' | 'paused' | 'pending' | 'up'
-
-export type OverallState = 'degraded' | 'maintenance' | 'operational' | 'outage'
-
 export type DayTone = 'down' | 'none' | 'up' | 'warn'
 
-export interface ResponseTime {
-    at: number
-    ms: number
-}
-
-export interface Outage {
-    end: number | null
-    start: number
-}
-
 export interface Incident {
-    end: number | null
+    end: null | number
     monitors: string[]
     ongoing: string[]
     start: number
@@ -27,20 +13,41 @@ export interface MaintenanceWindow {
     start: number
 }
 
+export interface MonitorGroup {
+    monitors: MonitorStatus[]
+    name: null | string
+}
+
+export type MonitorState = 'down' | 'paused' | 'pending' | 'up'
+
 export interface MonitorStatus {
+    averageResponseTime: null | number
+    days: (null | number)[]
     id: string
-    averageResponseTime: number | null
-    days: (number | null)[]
     name: string
     outages: Outage[]
     responseTimes: ResponseTime[]
     state: MonitorState
-    uptime: number | null
+    uptime: null | number
 }
 
-export interface MonitorGroup {
-    monitors: MonitorStatus[]
-    name: string | null
+export interface Outage {
+    end: null | number
+    start: number
+}
+
+export type OverallState = 'degraded' | 'maintenance' | 'operational' | 'outage'
+
+export interface ResponseTime {
+    at: number
+    ms: number
+}
+
+export interface SiteInfo {
+    accentColor: null | string
+    description: string
+    logo: null | string
+    title: string
 }
 
 export interface StatusData {
@@ -53,17 +60,10 @@ export interface StatusData {
     updatedAt: number
 }
 
-export type StatusResult =
-    { data: StatusData; kind: 'ok' } | { kind: 'error' } | { kind: 'setup' }
-
-export interface SiteInfo {
-    accentColor: string | null
-    description: string
-    logo: string | null
-    title: string
-}
-
 export interface StatusResponse {
     result: StatusResult
     site: SiteInfo
 }
+
+export type StatusResult =
+    { data: StatusData; kind: 'ok' } | { kind: 'error' } | { kind: 'setup' }

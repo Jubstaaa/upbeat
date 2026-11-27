@@ -1,5 +1,6 @@
-import { formatDateTime } from './format'
 import type { OverallState, StatusData } from './status.types'
+
+import { formatDateTime } from './format'
 
 export const OVERALL_TITLES: Record<OverallState, string> = {
     degraded: 'Partial outage',
@@ -17,8 +18,19 @@ export const OVERALL_COLORS: Record<OverallState, string> = {
 
 export const UNKNOWN_COLOR = '#9f9f9f'
 
-export function isAlertState(state: OverallState): boolean {
-    return state === 'degraded' || state === 'outage'
+export function getDocumentTitle(
+    state: OverallState,
+    siteTitle: string
+): string {
+    return state === 'operational'
+        ? siteTitle
+        : `${OVERALL_TITLES[state]} · ${siteTitle}`
+}
+
+export function getFavicon(state: null | OverallState): string {
+    const color = state ? OVERALL_COLORS[state] : UNKNOWN_COLOR
+    const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='6' fill='${color}'/></svg>`
+    return `data:image/svg+xml,${encodeURIComponent(svg)}`
 }
 
 export function getOverallDetail(data: StatusData): string {
@@ -51,17 +63,6 @@ export function getOverallDetail(data: StatusData): string {
         : `All ${watched.length} services are up`
 }
 
-export function getDocumentTitle(
-    state: OverallState,
-    siteTitle: string
-): string {
-    return state === 'operational'
-        ? siteTitle
-        : `${OVERALL_TITLES[state]} · ${siteTitle}`
-}
-
-export function getFavicon(state: OverallState | null): string {
-    const color = state ? OVERALL_COLORS[state] : UNKNOWN_COLOR
-    const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle cx='8' cy='8' r='6' fill='${color}'/></svg>`
-    return `data:image/svg+xml,${encodeURIComponent(svg)}`
+export function isAlertState(state: OverallState): boolean {
+    return state === 'degraded' || state === 'outage'
 }

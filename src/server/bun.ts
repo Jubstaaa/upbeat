@@ -1,5 +1,5 @@
+import { serveStatic } from '@hono/bun'
 import { Hono } from 'hono'
-import { serveStatic } from 'hono/bun'
 
 import { getConfig } from '@/server/config/config'
 import { getStatus } from '@/server/status/status'

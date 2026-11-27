@@ -1,11 +1,11 @@
 import { readFileSync } from 'node:fs'
-
 import { describe, expect, it, vi } from 'vitest'
 
 import type { SiteConfig } from '@/server/config/config.types'
+import type { StatusResult } from '@/status/status.types'
+
 import { createDemoMonitors } from '@/server/demo/demo'
 import { toStatusData } from '@/server/status/status.utils'
-import type { StatusResult } from '@/status/status.types'
 
 import { parseHeadersFile } from './headers-file'
 import { createApp } from './server'
@@ -22,7 +22,7 @@ const CONFIG: SiteConfig = {
     url: null,
 }
 
-function app(result: StatusResult | Error, config: SiteConfig = CONFIG) {
+function app(result: Error | StatusResult, config: SiteConfig = CONFIG) {
     return createApp({
         getConfig: () => config,
         getStatus: () =>
@@ -42,7 +42,10 @@ describe('GET /api/status', () => {
         const response = await app(ok).request('/api/status')
         expect(response.status).toBe(200)
         expect(response.headers.get('cache-control')).toContain('max-age=60')
-        const body = await response.json()
+        const body = (await response.json()) as {
+            result: { data: { groups: unknown[] }; kind: string }
+            site: unknown
+        }
         expect(body.result.kind).toBe('ok')
         expect(body.result.data.groups).toHaveLength(3)
         expect(body.site).toEqual({
@@ -61,11 +64,15 @@ describe('GET /api/status', () => {
     it('reports setup and errors without caching them', async () => {
         const setup = await app({ kind: 'setup' }).request('/api/status')
         expect(setup.status).toBe(503)
-        expect((await setup.json()).result).toEqual({ kind: 'setup' })
+        expect(((await setup.json()) as { result: unknown }).result).toEqual({
+            kind: 'setup',
+        })
         expect(setup.headers.get('cache-control')).toBe('no-store')
         const failed = await app(new Error('boom')).request('/api/status')
         expect(failed.status).toBe(503)
-        expect((await failed.json()).result).toEqual({ kind: 'error' })
+        expect(((await failed.json()) as { result: unknown }).result).toEqual({
+            kind: 'error',
+        })
     })
 })
 

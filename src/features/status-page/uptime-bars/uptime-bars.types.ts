@@ -1,9 +1,3 @@
-export interface UptimeBarsProps {
-    days: (number | null)[]
-    dayStarts: number[]
-    name: string
-}
-
 export interface ActiveBar {
     index: number
     isTouch: boolean
@@ -14,4 +8,10 @@ export interface ActiveBar {
 export interface UptimeBarsDayProps {
     dayStart: number
     value: null | number
+}
+
+export interface UptimeBarsProps {
+    days: (null | number)[]
+    dayStarts: number[]
+    name: string
 }

@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useMemo } from 'react'
-
 import { useQuery } from '@tanstack/react-query'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import SummaryCard from '@/features/status-page/summary-card/summary-card'
 import { getDocumentTitle, getFavicon } from '@/status/overall'
@@ -40,7 +39,9 @@ export default function StatusPage() {
     )
 
     const handleToggle = useCallback(
-        (id: string) => setOpenId(openId === id ? '' : id),
+        (id: string) => {
+            setOpenId(openId === id ? '' : id)
+        },
         [openId, setOpenId]
     )
     const handleRetry = useCallback(() => {
@@ -80,11 +81,11 @@ export default function StatusPage() {
             {hasMonitors ? (
                 data.groups.map(group => (
                     <MonitorGroup
-                        key={group.name ?? ''}
                         dayStarts={data.dayStarts}
                         group={group}
-                        openId={openId}
+                        key={group.name ?? ''}
                         onToggle={handleToggle}
+                        openId={openId}
                     />
                 ))
             ) : (

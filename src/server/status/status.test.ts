@@ -1,7 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
-import { UptimeRobotKeyError } from '@/server/uptimerobot/uptimerobot'
 import type { UptimeRobotMonitor } from '@/server/uptimerobot/uptimerobot.schema'
+
+import { UptimeRobotKeyError } from '@/server/uptimerobot/uptimerobot'
 
 import { createStatusSource } from './status'
 
@@ -66,7 +67,7 @@ describe('createStatusSource', () => {
             async () => Promise.reject(new Error('timeout')),
         ]
         const { advance, source } = setup(() =>
-            (responses.shift() ?? responses[0])()
+            (responses.shift() ?? responses[0]!)()
         )
         await source()
         advance(61_000)
@@ -99,7 +100,7 @@ describe('createStatusSource', () => {
             async () => [monitor()],
         ]
         const { advance, fetchMonitors, source } = setup(() =>
-            (responses.shift() ?? responses[0])()
+            (responses.shift() ?? responses[0]!)()
         )
         void source()
         advance(16_000)

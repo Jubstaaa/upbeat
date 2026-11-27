@@ -1,25 +1,13 @@
 import { describe, expect, it } from 'vitest'
 
+import type { MonitorStatus, StatusData } from './status.types'
+
 import {
     getDocumentTitle,
     getFavicon,
     getOverallDetail,
     isAlertState,
 } from './overall'
-import type { MonitorStatus, StatusData } from './status.types'
-
-function monitor(name: string, state: MonitorStatus['state']): MonitorStatus {
-    return {
-        averageResponseTime: null,
-        days: [],
-        id: name.toLowerCase(),
-        name,
-        outages: [],
-        responseTimes: [],
-        state,
-        uptime: 100,
-    }
-}
 
 function data(
     monitors: MonitorStatus[],
@@ -34,6 +22,19 @@ function data(
         stale: false,
         updatedAt: 1_000,
         ...overrides,
+    }
+}
+
+function monitor(name: string, state: MonitorStatus['state']): MonitorStatus {
+    return {
+        averageResponseTime: null,
+        days: [],
+        id: name.toLowerCase(),
+        name,
+        outages: [],
+        responseTimes: [],
+        state,
+        uptime: 100,
     }
 }
 
