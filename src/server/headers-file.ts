@@ -3,8 +3,10 @@ export interface HeaderRule {
     path: string
 }
 
-// Cloudflare's own parser for the `_headers` format is internal to wrangler,
-// so the Vercel build and the tests read the file with this small one.
+export function matchesHeaderPath(rulePath: string, pathname: string): boolean {
+    return new URLPattern({ pathname: rulePath }).test({ pathname })
+}
+
 export function parseHeadersFile(text: string): HeaderRule[] {
     const rules: HeaderRule[] = []
     for (const line of text.split('\n')) {
@@ -22,8 +24,4 @@ export function parseHeadersFile(text: string): HeaderRule[] {
             .trim()
     }
     return rules
-}
-
-export function matchesHeaderPath(rulePath: string, pathname: string): boolean {
-    return new URLPattern({ pathname: rulePath }).test({ pathname })
 }

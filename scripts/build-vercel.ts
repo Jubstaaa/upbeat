@@ -29,7 +29,7 @@ await writeFile(
         shouldAddHelpers: false,
     })
 )
-// Vercel has no `_headers` support, so the same rules become header routes.
+
 const headerRoutes = parseHeadersFile(
     await readFile('public/_headers', 'utf8')
 ).map(({ headers, path }) => ({

@@ -4,7 +4,7 @@ import { formatAgo } from '@/status/format'
 
 interface SiteHeaderProps {
     isStale: boolean
-    logo: string | null
+    logo: null | string
     title: string
     updatedAt: number
 }
@@ -25,8 +25,12 @@ export default function SiteHeader({
     )
 
     useEffect(() => {
-        const timer = setInterval(() => setNow(Date.now()), TICK_MS)
-        return () => clearInterval(timer)
+        const timer = setInterval(() => {
+            setNow(Date.now())
+        }, TICK_MS)
+        return () => {
+            clearInterval(timer)
+        }
     }, [])
 
     return (

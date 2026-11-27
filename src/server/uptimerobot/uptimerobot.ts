@@ -1,7 +1,8 @@
 import type { z } from 'zod'
 
-import { pageSchema } from './uptimerobot.schema'
 import type { MonitorQuery, UptimeRobotMonitor } from './uptimerobot.schema'
+
+import { pageSchema } from './uptimerobot.schema'
 
 type UptimeRobotPage = z.output<typeof pageSchema>
 
@@ -15,6 +16,18 @@ export class UptimeRobotKeyError extends Error {
     constructor() {
         super('UptimeRobot rejected the API key')
         this.name = 'UptimeRobotKeyError'
+    }
+}
+
+export async function fetchMonitors(
+    apiKey: string,
+    query: MonitorQuery
+): Promise<UptimeRobotMonitor[]> {
+    const monitors: UptimeRobotMonitor[] = []
+    for (let offset = 0; ; offset += PAGE_SIZE) {
+        const page = await fetchPage(apiKey, query, offset)
+        monitors.push(...(page.monitors ?? []))
+        if (offset + PAGE_SIZE >= (page.pagination?.total ?? 0)) return monitors
     }
 }
 
@@ -66,16 +79,4 @@ async function fetchPage(
     throw new Error(
         `UptimeRobot returned an error (${page.error?.type ?? 'unknown'})`
     )
-}
-
-export async function fetchMonitors(
-    apiKey: string,
-    query: MonitorQuery
-): Promise<UptimeRobotMonitor[]> {
-    const monitors: UptimeRobotMonitor[] = []
-    for (let offset = 0; ; offset += PAGE_SIZE) {
-        const page = await fetchPage(apiKey, query, offset)
-        monitors.push(...(page.monitors ?? []))
-        if (offset + PAGE_SIZE >= (page.pagination?.total ?? 0)) return monitors
-    }
 }

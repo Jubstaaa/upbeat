@@ -1,19 +1,14 @@
 {
+    "extends": "@jubstaaa/config/tsconfig/node",
     "compilerOptions": {
-        "target": "ES2022",
         "lib": ["dom", "dom.iterable", "esnext"],
         "types": ["vite/client", "bun"],
-        "skipLibCheck": true,
-        "strict": true,
-        "noEmit": true,
-        "module": "esnext",
-        "moduleResolution": "bundler",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
         "verbatimModuleSyntax": false,
         "jsx": "react-jsx",
-        "paths": { "@/*": ["./src/*"] }
+        "paths": {
+            "@/*": ["./src/*"]
+        }
     },
-    "include": ["src", "e2e", "*.ts", "*.mts"],
+    "include": ["src", "e2e", "scripts", "*.ts", "*.mts"],
     "exclude": ["node_modules", "dist"]
 }

@@ -1,28 +1,25 @@
 import { Feed } from 'feed'
 
+import type { StatusData } from '@/status/status.types'
+
 import {
     formatDateTime,
     formatDuration,
     formatIncidentTitle,
 } from '@/status/format'
-import type { StatusData } from '@/status/status.types'
-
-interface FeedInput {
-    data: StatusData | null
-    now: number
-    siteUrl: string
-    title: string
-}
 
 interface FeedEntry {
-    id: string
     date: Date
+    id: string
     summary: string
     title: string
 }
 
-function toDate(seconds: number): Date {
-    return new Date(seconds * 1_000)
+interface FeedInput {
+    data: null | StatusData
+    now: number
+    siteUrl: string
+    title: string
 }
 
 export function renderFeed({ data, now, siteUrl, title }: FeedInput): string {
@@ -65,4 +62,8 @@ export function renderFeed({ data, now, siteUrl, title }: FeedInput): string {
         })
     }
     return feed.atom1()
+}
+
+function toDate(seconds: number): Date {
+    return new Date(seconds * 1_000)
 }

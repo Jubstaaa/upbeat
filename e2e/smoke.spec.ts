@@ -70,7 +70,9 @@ test('does not shift the layout while loading', async ({ page }) => {
                             )
                     )
                 }).observe({ buffered: true, type: 'layout-shift' })
-                setTimeout(() => resolve(0), 1_000)
+                setTimeout(() => {
+                    resolve(0)
+                }, 1_000)
             })
     )
     expect(shift).toBeLessThan(0.01)
@@ -111,9 +113,9 @@ test('skips the expand animation when motion is reduced', async ({ page }) => {
     await page.goto('/', { waitUntil: 'networkidle' })
     const opacity = await page.evaluate(async () => {
         const row = [...document.querySelectorAll('button')].find(button =>
-            button.textContent?.includes('Public API')
+            button.textContent.includes('Public API')
         )
-        row?.click()
+        if (row) row.click()
         await new Promise(requestAnimationFrame)
         await new Promise(requestAnimationFrame)
         const details = document.querySelector(

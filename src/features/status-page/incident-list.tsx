@@ -1,10 +1,11 @@
+import type { Incident } from '@/status/status.types'
+
 import { cn } from '@/lib/utils'
 import {
     formatDateTime,
     formatIncidentTitle,
     formatOutageDuration,
 } from '@/status/format'
-import type { Incident } from '@/status/status.types'
 
 interface IncidentListProps {
     incidents: Incident[]
@@ -24,8 +25,8 @@ export default function IncidentList({ incidents }: IncidentListProps) {
                 <ul>
                     {incidents.map(incident => (
                         <li
-                            key={incident.start}
-                            className="flex gap-4 border-t border-border py-3.5 last:border-b max-sm:flex-col max-sm:gap-0.5">
+                            className="flex gap-4 border-t border-border py-3.5 last:border-b max-sm:flex-col max-sm:gap-0.5"
+                            key={incident.start}>
                             <time
                                 className="w-32 flex-none text-sm text-muted-foreground"
                                 dateTime={new Date(

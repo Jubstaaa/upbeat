@@ -1,7 +1,8 @@
 import * as m from 'motion/react-m'
 
-import { formatDateTime } from '@/status/format'
 import type { MaintenanceWindow } from '@/status/status.types'
+
+import { formatDateTime } from '@/status/format'
 
 interface MaintenanceBannerProps {
     at: number

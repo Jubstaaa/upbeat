@@ -2,15 +2,15 @@ import { describe, expect, it } from 'vitest'
 
 import { buildSparkline } from './response-sparkline.utils'
 
-function points(values: number[]) {
-    return values.map((ms, index) => ({ at: index * 300, ms }))
-}
-
 function coordinates(path: string): number[][] {
     return [...path.matchAll(/[ML]([\d.]+),([\d.]+)/g)].map(match => [
         Number(match[1]),
         Number(match[2]),
     ])
+}
+
+function points(values: number[]) {
+    return values.map((ms, index) => ({ at: index * 300, ms }))
 }
 
 describe('buildSparkline', () => {
@@ -23,10 +23,10 @@ describe('buildSparkline', () => {
         const coords = coordinates(
             buildSparkline(points([100, 400, 250]), 100, 20)
         )
-        expect(coords[0][0]).toBe(0)
+        expect(coords[0]![0]!).toBe(0)
         expect(coords.at(-1)?.[0]).toBe(100)
-        expect(coords.every(([, y]) => y >= 0 && y <= 20)).toBe(true)
-        expect(coords[1][1]).toBeLessThan(coords[0][1])
+        expect(coords.every(([, y]) => y! >= 0 && y! <= 20)).toBe(true)
+        expect(coords[1]![1]!).toBeLessThan(coords[0]![1]!)
     })
 
     it('draws a flat series through the middle', () => {

@@ -1,15 +1,17 @@
 import { useMemo } from 'react'
 
+import type { OverallState } from '@/status/status.types'
+
 import { cn } from '@/lib/utils'
 import {
     getOverallDetail,
     isAlertState,
     OVERALL_TITLES,
 } from '@/status/overall'
-import type { OverallState } from '@/status/status.types'
+
+import type { SummaryCardProps } from './summary-card.types'
 
 import SummaryCardHeartbeat from './summary-card-heartbeat'
-import type { SummaryCardProps } from './summary-card.types'
 
 const DOTS: Record<OverallState, string> = {
     degraded: 'bg-down',

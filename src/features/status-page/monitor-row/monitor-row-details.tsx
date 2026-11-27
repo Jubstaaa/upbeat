@@ -39,8 +39,8 @@ export default function MonitorRowDetails({ monitor }: MonitorRowDetailsProps) {
                 <ul className="divide-y divide-border text-sm">
                     {monitor.outages.map(outage => (
                         <li
-                            key={outage.start}
-                            className="flex justify-between gap-4 py-2">
+                            className="flex justify-between gap-4 py-2"
+                            key={outage.start}>
                             <span>{formatDateTime(outage.start)}</span>
                             <span
                                 className={cn(

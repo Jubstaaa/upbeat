@@ -67,6 +67,6 @@ describe('readConfig', () => {
             url: null,
         })
         expect(error).toHaveBeenCalledTimes(3)
-        expect(error.mock.calls[0][0]).toContain('ACCENT_COLOR')
+        expect(error.mock.calls[0]![0]).toContain('ACCENT_COLOR')
     })
 })

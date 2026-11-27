@@ -1,8 +1,9 @@
 import { makeBadge } from 'badge-maker'
 
+import type { MonitorState, StatusResult } from '@/status/status.types'
+
 import { formatPercent } from '@/status/format'
 import { OVERALL_COLORS, UNKNOWN_COLOR } from '@/status/overall'
-import type { MonitorState, StatusResult } from '@/status/status.types'
 
 interface BadgeContent {
     color: string
@@ -25,7 +26,7 @@ const UNKNOWN: BadgeContent = {
 
 export function getBadgeContent(
     result: StatusResult,
-    monitorId: string | null
+    monitorId: null | string
 ): BadgeContent {
     if (result.kind !== 'ok') return UNKNOWN
     const { data } = result

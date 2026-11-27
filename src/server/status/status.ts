@@ -1,27 +1,28 @@
-import { getConfig } from '@/server/config/config'
-import { createDemoMonitors } from '@/server/demo/demo'
-import {
-    fetchMonitors,
-    UptimeRobotKeyError,
-} from '@/server/uptimerobot/uptimerobot'
 import type {
     MonitorQuery,
     UptimeRobotMonitor,
 } from '@/server/uptimerobot/uptimerobot.schema'
 import type { StatusData, StatusResult } from '@/status/status.types'
 
+import { getConfig } from '@/server/config/config'
+import { createDemoMonitors } from '@/server/demo/demo'
+import {
+    fetchMonitors,
+    UptimeRobotKeyError,
+} from '@/server/uptimerobot/uptimerobot'
+
 import { buildQuery, toStatusData } from './status.utils'
+
+interface CachedResult {
+    expiresAt: number
+    result: StatusResult
+}
 
 type StatusSource = () => Promise<StatusResult>
 
 interface StatusSourceOptions {
     clock?: () => number
     fetchMonitors: (query: MonitorQuery) => Promise<UptimeRobotMonitor[]>
-}
-
-interface CachedResult {
-    expiresAt: number
-    result: StatusResult
 }
 
 const FRESH_MS = 60_000
@@ -33,8 +34,8 @@ export function createStatusSource({
     fetchMonitors: load,
 }: StatusSourceOptions): StatusSource {
     let cached: CachedResult | null = null
-    let lastGood: StatusData | null = null
-    let pending: Promise<StatusResult> | null = null
+    let lastGood: null | StatusData = null
+    let pending: null | Promise<StatusResult> = null
     let pendingSince = 0
 
     function remember(
@@ -83,7 +84,7 @@ export function createStatusSource({
     }
 }
 
-let source: StatusSource | null = null
+let source: null | StatusSource = null
 
 export function getStatus(): Promise<StatusResult> {
     const { apiKey, demo } = getConfig()

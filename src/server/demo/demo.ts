@@ -1,21 +1,22 @@
+import type { UptimeRobotMonitor } from '@/server/uptimerobot/uptimerobot.schema'
+
 import {
     DAY_SECONDS,
     getDayStarts,
     HISTORY_DAYS,
 } from '@/server/status/status.utils'
-import type { UptimeRobotMonitor } from '@/server/uptimerobot/uptimerobot.schema'
-
-interface DemoOutage {
-    daysAgo: number
-    hour: number
-    minutes: number
-}
 
 interface DemoMonitor {
     createdDaysAgo: number
     name: string
     outages: DemoOutage[]
     responseMs: number
+}
+
+interface DemoOutage {
+    daysAgo: number
+    hour: number
+    minutes: number
 }
 
 const RESPONSE_POINTS = 288
@@ -58,6 +59,10 @@ const DEMO_MONITORS: DemoMonitor[] = [
     { createdDaysAgo: 400, name: 'Status page', outages: [], responseMs: 60 },
 ]
 
+export function createDemoMonitors(now: number): UptimeRobotMonitor[] {
+    return DEMO_MONITORS.map((spec, index) => toMonitor(spec, index, now))
+}
+
 function seeded(seed: number): () => number {
     let state = seed
     return () => {
@@ -72,7 +77,7 @@ function toMonitor(
     now: number
 ): UptimeRobotMonitor {
     const dayStarts = getDayStarts(now)
-    const today = dayStarts[HISTORY_DAYS - 1]
+    const today = dayStarts[HISTORY_DAYS - 1] ?? dayStarts[0]
     const logs = spec.outages.map(outage => ({
         datetime: today - outage.daysAgo * DAY_SECONDS + outage.hour * 3_600,
         duration: outage.minutes * 60,
@@ -88,7 +93,8 @@ function toMonitor(
             (1 - downtime(start, start + DAY_SECONDS) / DAY_SECONDS)
         ).toFixed(3)
     )
-    const total = 100 * (1 - downtime(dayStarts[0], now) / (now - dayStarts[0]))
+    const firstDay = dayStarts[0]
+    const total = 100 * (1 - downtime(firstDay, now) / (now - firstDay))
     const random = seeded(index + 1)
 
     return {
@@ -108,8 +114,4 @@ function toMonitor(
         })),
         status: 2,
     }
-}
-
-export function createDemoMonitors(now: number): UptimeRobotMonitor[] {
-    return DEMO_MONITORS.map((spec, index) => toMonitor(spec, index, now))
 }
