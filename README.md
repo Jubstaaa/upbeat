@@ -1,6 +1,10 @@
 <p align="center"><img src="assets/icon.svg" width="72" height="72" alt=""></p>
 
-<h1 align="center">upbeat</h1>
+<div align="center">
+
+# upbeat
+
+</div>
 
 <p align="center">A beautiful, animated status page for UptimeRobot.<br>One read-only API key, no database, deploy in a minute.</p>
 
