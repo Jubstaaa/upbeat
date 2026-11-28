@@ -2,6 +2,13 @@
 
 All notable changes to this project are documented here. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses [Semantic Versioning](https://semver.org/).
 
+## [1.0.5](https://github.com/Jubstaaa/upbeat/compare/v1.0.4...v1.0.5) (2026-11-28)
+
+
+### Bug Fixes
+
+* **ci:** drop the comments from the workflows ([#50](https://github.com/Jubstaaa/upbeat/issues/50)) ([ca5712c](https://github.com/Jubstaaa/upbeat/commit/ca5712cff5b170cf59eeacc81de438f24dcefde3))
+
 ## [1.0.4] - 2026-11-20
 
 ### Security
