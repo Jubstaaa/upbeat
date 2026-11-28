@@ -51,7 +51,7 @@
     "devDependencies": {
         "@axe-core/playwright": "^4.14.0",
         "@cloudflare/vite-plugin": "^1.70.1",
-        "@jubstaa/config": "^1.6.0",
+        "@jubstaa/config": "^2.1.0",
         "@playwright/test": "^1.65.0",
         "@tailwindcss/vite": "^4.3.5",
         "@types/bun": "^1.4.4",
